@@ -1,0 +1,36 @@
+.partners {
+     margin-top: 130px;
+     display: flex;
+     height: 200px;
+     justify-content: center;
+     background-color: #fdfaf6;
+}
+
+.partnersContainer {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     width: 90%;
+     align-items: center;
+     max-width: 1250px;
+}
+
+.partnersItem {
+     cursor: pointer;
+     padding: 16px 10px;
+}
+
+@media only screen and (max-width: 1100px) {
+     .partners {
+          height: min-content;
+     }
+     .partnersItem {
+          flex: 33%;
+          display: flex;
+          justify-content: center;
+     }
+
+     .partnersContainer {
+          width: 95%;
+     }
+}

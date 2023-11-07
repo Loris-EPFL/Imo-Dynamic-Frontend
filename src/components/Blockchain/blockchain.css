@@ -1,0 +1,89 @@
+.blockchain {
+     margin-top: 130px;
+     display: flex;
+     justify-content: center;
+}
+
+.blockchainContainer {
+     display: flex;
+     justify-content: space-between;
+     width: 90%;
+     max-width: 1250px;
+}
+
+.blockchainLeft {
+     padding: 20px 24px;
+     margin-top: 65px;
+     flex: 50%;
+     max-width: 505px;
+}
+
+.blockchainRight {
+     flex: 50%;
+     max-width: 600px;
+     margin-left: 80px;
+     display: flex;
+     justify-content: flex-end;
+}
+
+.blockchainLeftTitle {
+     color: var(--color-black);
+     font-weight: bold;
+     font-size: 32px;
+     max-width: 60%;
+     margin-bottom: 25px;
+     line-height: 1.3;
+}
+
+.blockchainLeftText {
+     margin-bottom: 5px;
+     display: flex;
+     font-size: 17px;
+     font-weight: 400;
+     line-height: 1.3;
+     color: var(--color-black);
+}
+@media only screen and (max-width: 1100px) {
+     .blockchainContainer {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+     }
+
+     .blockchainLeft {
+          max-width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+     }
+
+     .blockchainRight {
+          margin-left: 0;
+          max-width: 100%;
+          justify-content: center;
+     }
+
+     .realEstateLeftButton {
+          margin: 45px 0px 20px 0px;
+     }
+}
+
+@media only screen and (max-width: 700px) {
+     .blockchainLeftTitle {
+          font-size: 26px;
+          max-width: 70%;
+     }
+
+     .blockchainLeftText {
+          font-size: 15px;
+     }
+
+     .blockchainContainer {
+          width: 100%;
+     }
+
+     .blockchainLeft {
+          padding: 20px 5px;
+     }
+}

@@ -1,0 +1,114 @@
+.pieChart {
+     display: flex;
+     justify-content: center;
+     text-align: center;
+     margin-top: 130px;
+}
+
+.pieChartContainer {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     width: 90%;
+     max-width: 1250px;
+}
+
+.pieChartTitle {
+     margin: 0px 22px;
+     font-weight: 600;
+     font-size: 32px;
+     margin-bottom: 80px;
+}
+
+.pieChartChart {
+     display: flex;
+}
+
+.pieChartChartLeft {
+     flex: 75%;
+     height: 560px;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+}
+
+.pieChartChartRight {
+     flex: 25%;
+     display: flex;
+     align-items: center;
+}
+
+.pieChartChartLeftList {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+}
+
+.pieChartChartLeftItem {
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     width: 90%;
+     height: 60px;
+     padding: 7px 0;
+     justify-content: space-between;
+}
+
+.pieChartChartLeftItemNone {
+     display: flex;
+     align-items: center;
+     width: 90%;
+     height: 60px;
+     padding: 7px 0;
+     justify-content: space-between;
+     opacity: 0.3;
+}
+
+.pieChartChartLeftItemTitle {
+     display: flex;
+     align-items: center;
+     text-align: left;
+     height: 100%;
+     font-size: 22px;
+     padding-left: 15px;
+}
+
+.pieChartChartLeftItemValue {
+     font-weight: bold;
+     justify-content: flex-end;
+     font-size: 22px;
+}
+
+.pieChartChartLeftItemLine {
+     width: 90%;
+     border-bottom: solid 1px #c7c7c7;
+}
+
+@media only screen and (max-width: 900px) {
+     .pieChartChart {
+          display: flex;
+          flex-direction: column-reverse;
+     }
+
+     .pieChartChartRight {
+          justify-content: center;
+     }
+}
+
+@media only screen and (max-width: 700px) {
+     .pieChartChartLeftItemTitle {
+          padding-left: 10px;
+          font-size: 16px;
+     }
+     .pieChartChartLeftItemValue {
+          font-size: 16px;
+     }
+
+     .pieChartChartLeftItem {
+          height: 40px;
+     }
+     .pieChartChartLeftItemNone {
+          height: 40px;
+     }
+}

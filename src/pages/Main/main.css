@@ -1,0 +1,76 @@
+body {
+     overflow-x: hidden;
+}
+
+.main {
+     background-color: white;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     padding: 0 3px;
+}
+
+.button {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     width: 215px;
+     height: 40px;
+     background-color: #1d202d;
+     border-radius: 25px;
+     cursor: pointer;
+     margin: 0;
+     transition: all 0.3s;
+}
+
+.button:hover {
+     transform: translateY(-6px);
+}
+
+.button:active {
+     transform: translateY(-6px);
+}
+
+.button.white {
+     background-color: white;
+     color: var(--color-black);
+     border: 3px solid black;
+     height: 37px;
+     width: 215px;
+     margin: 0;
+}
+
+.BC {
+     z-index: 1;
+     top: 0;
+     position: absolute;
+     opacity: 0.8;
+     width: 100%;
+}
+
+.BCNONE {
+     z-index: 1;
+     top: 0;
+     position: absolute;
+     opacity: 0;
+     width: 100%;
+}
+
+:root {
+     --color-black: #1d202d;
+     --color-main: #fdfaf6;
+}
+
+@media only screen and (max-width: 630px) {
+     .main {
+          margin: 5px;
+     }
+
+     .button {
+          width: 180px;
+     }
+
+     .button.white {
+          width: 180px;
+     }
+}

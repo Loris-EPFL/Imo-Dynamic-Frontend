@@ -1,0 +1,90 @@
+.dataScience {
+     display: flex;
+     justify-content: center;
+     text-align: center;
+     margin-top: 130px;
+     opacity: 0;
+}
+
+.dataScienceContainer {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     width: 90%;
+     max-width: 1250px;
+}
+
+.dataScienceTitle {
+     color: var(--color-black);
+     margin: 0px 22px;
+     font-weight: 600;
+     font-size: 32px;
+     margin-bottom: 50px;
+     line-height: 1.3;
+}
+
+.dataScienceList {
+     padding: 0 80px;
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     grid-row-gap: 35px;
+     grid-column-gap: -50px;
+}
+
+.dataScienceItem {
+     display: flex;
+     justify-content: center;
+}
+
+.dataScienceItemIcon {
+     margin-right: 0px;
+}
+
+.dataScienceItemText {
+     display: flex;
+     color: var(--color-black);
+     flex-direction: column;
+     align-items: flex-start;
+     padding-left: 20px;
+     justify-content: center;
+     width: 250px;
+}
+
+.dataScienceItemTextTitle {
+     text-align: left;
+     font-size: 17px;
+     line-height: 2;
+     font-weight: bold;
+}
+
+.dataScienceItemTextNumber {
+     display: flex;
+     font-weight: 500;
+     color: #5e5f6a;
+}
+
+.dataScienceItemTextNumberEnd {
+     margin-left: 5px;
+}
+
+.dataScienceButton {
+     margin-top: 55px;
+     display: flex;
+     justify-content: center;
+     color: white;
+}
+
+@media only screen and (max-width: 900px) {
+     .dataScienceContainer {
+          width: 100%;
+     }
+     .dataScienceList {
+          padding: 0 10px;
+     }
+}
+
+@media only screen and (max-width: 700px) {
+     .dataScienceList {
+          grid-template-columns: 1fr;
+     }
+}

@@ -1,0 +1,85 @@
+.presentaion {
+     margin-top: 130px;
+     display: flex;
+     justify-content: center;
+}
+
+.presentaionContainer {
+     display: flex;
+     justify-content: space-between;
+     width: 90%;
+     max-width: 1250px;
+}
+
+.presentaionLeft {
+     flex: 50%;
+     max-width: 600px;
+     margin-left: 20px;
+     display: flex;
+     justify-content: flex-start;
+}
+
+.presentaionRight {
+     padding: 20px 24px;
+     margin-top: 135px;
+     flex: 50%;
+     text-align: right;
+     max-width: 505px;
+}
+
+.presentaionRightTitle {
+     color: var(--color-black);
+     font-weight: bold;
+     font-size: 32px;
+     margin-bottom: 25px;
+     line-height: 1.3;
+}
+
+.presentaionRightText {
+     margin-bottom: 5px;
+     color: var(--color-black);
+     display: flex;
+     font-size: 17px;
+     font-weight: 400;
+     line-height: 1.3;
+}
+
+@media only screen and (max-width: 1100px) {
+     .presentaionContainer {
+          display: flex;
+          flex-direction: column-reverse;
+          justify-content: flex-start;
+     }
+
+     .presentaionLeft {
+          margin-left: 0;
+          max-width: 100%;
+          justify-content: center;
+     }
+
+     .presentaionRight {
+          max-width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+     }
+}
+
+@media only screen and (max-width: 700px) {
+     .presentaionRightTitle {
+          font-size: 26px;
+          max-width: 70%;
+     }
+
+     .presentaionRightText {
+          font-size: 15px;
+     }
+     .presentaionRight {
+          padding: 20px 5px;
+     }
+
+     .presentaionContainer {
+          width: 100%;
+     }
+}

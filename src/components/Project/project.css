@@ -1,0 +1,129 @@
+.project {
+     display: flex;
+     justify-content: center;
+     text-align: center;
+     margin-top: 130px;
+}
+
+.projectComponent {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     width: 90%;
+     max-width: 1250px;
+}
+
+.projectTitle {
+     color: var(--color-black);
+     margin: 0px 22px;
+     font-weight: 600;
+     font-size: 32px;
+     margin-bottom: 50px;
+     line-height: 1.3;
+}
+
+.projectList {
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
+     grid-row-gap: 35px;
+     grid-column-gap: 50px;
+}
+
+.projectItem {
+     height: 350px;
+     color: var(--color-black);
+     background-color: transparent;
+     perspective: 900px;
+}
+
+.projectItemIcon {
+     padding: 30px;
+}
+
+.projectItemText {
+     padding: 0px 40px 40px 40px;
+     font-size: 17px;
+     font-weight: bold;
+     line-height: 1.3;
+}
+
+/* ANIMATION */
+
+.projectItemWrapper {
+     width: 100%;
+     height: 100%;
+     position: relative;
+     transition: transform 0.8s ease-in;
+     transform-style: preserve-3d;
+}
+
+.projectItemFront {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     height: 100%;
+     width: 100%;
+     background-color: var(--color-main);
+     border-radius: 10px;
+     -webkit-backface-visibility: hidden;
+     backface-visibility: hidden;
+     transform: rotateY(0deg);
+     transition: 0.4s;
+}
+
+.projectItemBack {
+     background-color: var(--color-main);
+     border-radius: 10px;
+     position: absolute;
+     height: 100%;
+     width: 100%;
+     top: 0;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     -webkit-backface-visibility: hidden;
+     backface-visibility: hidden;
+     transform: rotateY(-180deg);
+     transition: 0.4s;
+}
+
+.projectItemBackText {
+     cursor: pointer;
+     padding: 25px;
+     text-align: left;
+     color: var(--color-black);
+     font-weight: 500;
+     line-height: 1.3;
+     font-size: 17px;
+     display: table-cell;
+}
+
+.projectItemBackText.underLineEN::after {
+     content: 'here.';
+     text-decoration: underline;
+}
+
+.projectItemBackText.underLineFR::after {
+     content: 'ici.';
+     text-decoration: underline;
+}
+
+.projectItem:hover .projectItemWrapper {
+     transform: rotateY(180deg);
+}
+
+@media only screen and (max-width: 1100px) {
+     .projectList {
+          grid-template-columns: 1fr 1fr;
+     }
+}
+
+@media only screen and (max-width: 720px) {
+     .projectList {
+          grid-template-columns: 1fr;
+     }
+
+     .projectComponent {
+          width: 98%;
+     }
+}

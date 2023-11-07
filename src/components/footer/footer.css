@@ -1,0 +1,125 @@
+.footer {
+     display: flex;
+     justify-content: center;
+     text-align: center;
+     margin-top: 130px;
+}
+
+.footerContainer {
+     display: flex;
+     width: 90%;
+}
+
+.footerLeft {
+     flex: 30%;
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     padding: 12px 20px 20px 20px;
+}
+
+.footerRight {
+     flex: 70%;
+     display: flex;
+}
+
+.footerLeftMainIcon {
+     width: 70px;
+}
+
+.footerLeftText {
+     color: var(--color-black);
+     font-weight: 600;
+     font-size: 17px;
+     padding-top: 27px;
+}
+
+.footerLeftLinks {
+     margin: 20px 0 0;
+     width: 100%;
+     display: flex;
+     justify-content: flex-start;
+     align-items: center;
+}
+
+.footerLeftItem {
+     margin-right: 20px;
+     cursor: pointer;
+}
+
+.footerLeftC {
+     color: var(--color-black);
+     margin-top: 15px;
+     margin-bottom: 20px;
+     font-size: 17px;
+}
+
+.footerRightColumn {
+     flex: 33%;
+     margin: 25px 45px;
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     text-align: left;
+}
+
+.footerRightTitle {
+     color: var(--color-black);
+     font-weight: 600;
+     font-size: 26px;
+     margin-bottom: 35px;
+}
+
+.footerRightLink {
+     cursor: pointer;
+     color: var(--color-black);
+     margin-bottom: 30px;
+     font-size: 17px;
+     font-weight: 400;
+     line-height: 1.3;
+}
+
+@media only screen and (max-width: 1100px) {
+     .footerContainer {
+          display: flex;
+          flex-direction: column-reverse;
+     }
+     .footerLeft {
+          flex: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 20px;
+     }
+
+     .footerLeftLinks {
+          justify-content: center;
+     }
+     .footerLeftC {
+          margin-top: 10px;
+     }
+
+     .footerRightColumn {
+          align-items: center;
+          text-align: center;
+     }
+}
+@media only screen and (max-width: 700px) {
+     .footerRight {
+          flex-direction: column;
+     }
+     .footerLeftItem {
+          width: 8%;
+     }
+}
+
+@media only screen and (max-width: 500px) {
+     .footerLeftLinks {
+          display: flex;
+          flex-wrap: wrap;
+     }
+     .footerLeftItem {
+          flex: 20%;
+          padding: 5px 7px;
+     }
+}

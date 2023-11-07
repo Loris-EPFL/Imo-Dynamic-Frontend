@@ -1,0 +1,46 @@
+.dropDown {
+     width: 150%;
+     position: absolute;
+     left: 0;
+     top: 20px;
+     z-index: 800;
+     opacity: 1;
+     text-align: start;
+}
+
+.dropdown-menu {
+     background: var(--color-main);
+     list-style: none;
+     text-align: center;
+     border-radius: 15px;
+}
+
+.dropdown-menu.clicked {
+     display: none;
+}
+
+.dropStatusList {
+     padding: 20px 0px;
+     margin-top: 20px;
+     display: block;
+     align-items: center;
+     text-align: center;
+}
+
+.dropStatusItem {
+     height: 45px;
+     display: flex;
+     align-items: center;
+     justify-content: flex-start;
+     padding-left: 10px;
+}
+
+.dropStatusItem:hover {
+     opacity: 0.4;
+}
+
+.dropStatusText {
+     margin-left: 10px;
+     font-weight: 400;
+     font-size: 14px;
+}
