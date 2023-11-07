@@ -19,42 +19,6 @@ const Roadmap = () => {
      const SLIDE_DURATION = 5000
      return (
           <div className='roadmap'>
-               <div className='roadmapContainer'>
-                    <div className='roadmapTitle'>{t('Roadmap')}</div>
-                    <div className='roadmapIcon'>
-                         <RoadmapSvg />
-                    </div>
-                    <div className='roadmapCarousel'>
-                         <Carousel slideDuration={SLIDE_DURATION} autoPlay={true}>
-                              {LanguageUse === 'en'
-                                   ? dummyDataEn.map((slide) => (
-                                          <RoadmapSlider
-                                               key={slide.id}
-                                               index={slide.id}
-                                               icon={slide.icon}
-                                               data={slide.data}
-                                               text={slide.text}
-                                               text2={slide.text2}
-                                               text3={slide.text3}
-                                               text4={slide.text4}
-                                          />
-                                     ))
-                                   : dummyDataFr.map((slide) => (
-                                          <RoadmapSlider
-                                               key={slide.id}
-                                               index={slide.id}
-                                               icon={slide.icon}
-                                               data={slide.data}
-                                               title={slide.title}
-                                               text={slide.text}
-                                               text2={slide.text2}
-                                               text3={slide.text3}
-                                               text4={slide.text4}
-                                          />
-                                     ))}
-                         </Carousel>
-                    </div>
-               </div>
           </div>
      )
 }
