@@ -12,6 +12,7 @@ import Team from '../../components/Team/Team'
 import Project from '../../components/Project/Project'
 import Roadmap from '../../components/Roadmap/Roadmap'
 import { Animation } from '../../components/Animation/Animation'
+import SupplyLineChart from '../../components/SupplyLineChart/SupplyLineChart'
 
 import './main.css'
 
@@ -20,6 +21,7 @@ const Main = () => {
           <main className='main'>
                <RealEstate />
                <DataScience />
+               <SupplyLineChart />
                <Presentation />
                <Partners />
                <Blockchain />
