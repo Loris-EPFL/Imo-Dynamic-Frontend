@@ -4,41 +4,63 @@ const apiKey = 'GNY6X65WD9GSC1962Z6DKNCAVBJJT9GEZC'; // Replace with your BscSca
 const tokenAddress = '0x94d79c325268c898d2902050730f27a478c56cc1'; // Replace with the ERC20 token address
 const burnAddress = '0x0000000000000000000000000000000000000000'; // Common burn address
 const fromAddress1 = '0xe8831eaab999ea3f051ed2fd31891ab4ab259b0b'; // Replace with the source address
-const fromAddress2 = '0xe8831eaab999ea3f051ed2fd31891ab4ab259b0b'; // Replace with the source address
-const toAddress = '0x0000000000000000000000000000000000000000'; // Replace with the destination address
+const fromAddress2 = '0xf110dB08D35F76010d6B8d0c1717D946D0F4fCc4'; // Replace with the source address
 const tokenDecimals = 18
 
 
 export const getBurns = async () => {
     try {
-        const url1 = `https://api.bscscan.com/api?module=account&action=tokentx&address=${fromAddress1}&startblock=0&endblock=99999999&sort=asc&apikey=${apiKey}`;
-        const url2 = `https://api.bscscan.com/api?module=account&action=tokentx&address=${fromAddress2}&startblock=0&endblock=99999999&sort=asc&apikey=${apiKey}`;
-        const response = await fetch(url1);
-        const data = await response.json();
+        //Burns are made by 2 addresses so we need to get burns by these 2
+        const url1 = `https://api.bscscan.com/api?module=account&action=tokentx&contractaddress=${tokenAddress}&address=${fromAddress1}&to=${burnAddress}&sort=asc&apikey=${apiKey}`;
+        const url2 = `https://api.bscscan.com/api?module=account&action=tokentx&contractaddress=${tokenAddress}&address=${fromAddress2}&to=${burnAddress}&sort=asc&apikey=${apiKey}`;
+        const response1 = await fetch(url1);
+        const response2 = await fetch(url2);
+        const data1 = await response1.json();
+        const data2 = await response2.json();
 
+        console.log('DATA')
+        console.log(data1)
+        console.log(data2)
         // Filter and format transactions
-        const filteredTransfers = data.result.filter(tx =>
-            tx.contractAddress.toLowerCase() === tokenAddress.toLowerCase() &&
-            tx.from.toLowerCase() === fromAddress1.toLowerCase() &&
-            tx.to.toLowerCase() === toAddress.toLowerCase()
-        ).map(tx => {
-            return {
-                timestamp: formatDate(tx.timeStamp),
-                hash: tx.hash,
-                url_bscscan: `https://bscscan.com/tx/${tx.hash}`,
-                value: formatTokenValue(tx.value, tokenDecimals)
-            }
+        let burnTransfers1 = data1.result
+            .filter(tx => tx.to == burnAddress)
+            
+        let burnTransfers2 = data2.result
+            .filter(tx => tx.to == burnAddress)
+
+        const burnTransfers_ = [...burnTransfers1, ...burnTransfers2]
+        burnTransfers_.sort((a, b) => a.timeStamp - b.timeStamp);
+                    
+        // console.log('DATA BURNS SORTED')
+        // console.log(burnTransfers)
+
+        const burnTransfers = burnTransfers_
+            .map(tx => {
+                return {
+                    timestamp: formatDate(tx.timeStamp),
+                    hash: tx.hash,
+                    url_bscscan: `https://bscscan.com/tx/${tx.hash}`,
+                    value: formatTokenValue(tx.value, tokenDecimals)
+                }
+            })    
+
+        
+        console.log('DATA BURNS')
+        console.log(burnTransfers)
+        
+        //Add the birth of IMO with initial Supply at the beginning of the array
+        burnTransfers.unshift({
+            timestamp: formatDate(1616243040),
+            hash: '0x4c00e3f6fa189341ec243bb16bfc4f7a4604d5fee05320f403f8331f78660c90',
+            url_bscscan: `https://bscscan.com/tx/0x4c00e3f6fa189341ec243bb16bfc4f7a4604d5fee05320f403f8331f78660c90`,
+            value: 0
         })
 
-        console.log('RESULT AVANT !!')
-        console.dir(filteredTransfers)
-
         let initialSupply = 20000000 
-        let result = transformArray(filteredTransfers, initialSupply);
+        let result = transformArray(burnTransfers, initialSupply);
         
-        console.log('RESULT !!')
-        console.dir(result)
         return result;
+
     } catch (error) {
         console.error('Error fetching filtered transfers:', error);
         throw error;
@@ -77,10 +99,20 @@ function formatTokenValue(value, decimals) {
 }
 
 // Function to convert Unix timestamp to human-readable date
-function formatDate(unixTimestamp) {
-    const date = new Date(unixTimestamp * 1000);
-    return date.toLocaleString(); // or use date.toISOString() for ISO format
-}
+// function formatDate(unixTimestamp) {
+//     const date = new Date(unixTimestamp * 1000);
+//     return date.toLocaleString(); // or use date.toISOString() for ISO format
+// }
+
+function formatDate(timestamp) {
+    var date = new Date(timestamp * 1000);
+    var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    console.log(timestamp)
+    console.log('date')
+    const dt = date.toLocaleDateString('en-GB', options)
+    console.log(dt)
+    return dt
+}    
 
 // Usage (Try it with the command 'node src/scripts/burnTokens.js')
 

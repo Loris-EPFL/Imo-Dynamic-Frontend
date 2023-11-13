@@ -24,7 +24,7 @@ const DataScience = () => {
     }
   };
 
-  /**** */
+  /**** DISPLAY SUPPLY CHART *****/
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -50,7 +50,8 @@ const DataScience = () => {
   })
 
   const [textToolTipPoint, setTextToolTipPoint] = useState([])
-  const [urlBscCsan, setUrlBscScan] = useState([])
+  const [urlBscCsan, setUrlBscScan]             = useState([])
+  const [totalSupplyBurnt, setTotalSupplyBurnt] = useState([])
 
   useEffect(() => {
       const fetchTransfers = async () => {
@@ -70,7 +71,12 @@ const DataScience = () => {
               setTextToolTipPoint(textTooltipData)
 
               const urlBscScanData = data.map(tx => tx.url_bscscan); 
+              console.log('URL')
+              console.log(urlBscScanData)
               setUrlBscScan(urlBscScanData)
+
+              let sum = data.reduce((accumulator, object) => accumulator + object.supplyBurnt, 0);
+              setTotalSupplyBurnt(sum)
 
               //Try with date like this : 
               //new Date(transfer.timestamp).toLocaleString()
@@ -106,7 +112,7 @@ const DataScience = () => {
           },
           title: {
               display: true,
-              text: 'Token Supply Over Time',
+              text: `Total supply burnt : ${totalSupplyBurnt}`,
               color: '#fdfaf6' // Title text color
           },
           tooltip: {
@@ -164,21 +170,18 @@ const DataScience = () => {
       },
       onClick: (event, elements) => {
           if (elements.length > 0) {
-              const randomUrl = getUrlBscScan();
-              window.open(randomUrl, '_blank');
+            const firstPoint = elements[0];
+            const index = firstPoint.index;
+            const url = urlBscCsan[index];
+            if (url) {
+                window.open(url, '_blank');
+            }
           }
       },
   }
 
-  const getUrlBscScan = () => {
-    // Define a list of random URLs
-    const urls = urlBscCsan
-    // Return a random URL from the list
-    return urls[Math.floor(Math.random() * urls.length)];
-  }
+  /**** END USE EFFECT TO DISPLAY SUPPLY CHART *****/
 
-
-  /******* */
   return (
     <div className="dataScience">
       <div className="dataScienceContainer">
