@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
+import { getBurns } from '../../scripts/burnTokens.mjs'// Import the function from the script
 import { ReactComponent as IMOIcon } from "../../Icons/IMOIcon.svg";
 import { ReactComponent as MarketIcon } from "../../Icons/MarketIcon.svg";
 import { ReactComponent as CirculatingIcon } from "../../Icons/CirculatingIcon.svg";
 import { ReactComponent as Burned } from "../../Icons/Burned.svg";
 import { Language } from "../../Context";
-
+import { Line } from 'react-chartjs-2';
 import useApi from "../../hooks/useApi";
 
 import "./dataScience.css";
@@ -24,6 +24,161 @@ const DataScience = () => {
     }
   };
 
+  /**** */
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [
+        {
+            label: 'Token Supply Over Time',
+            data: [],
+            fill: false,
+            backgroundColor: '#fdfaf6',
+            borderColor: '#fdfaf6',
+            pointBackgroundColor: '#fdfaf6',
+            pointBorderColor: '#fdfaf6',
+            pointHoverBackgroundColor: '#fdfaf6',
+            pointHoverBorderColor: '#fdfaf6',
+            pointHoverBorderWidth: 5,
+            pointHoverRadius: 5,
+            pointStyle: 'circle',
+            pointRadius: 3,
+            pointHitRadius: 10,
+            tension: 0.4, // This adds some curvature to the line
+            //stepped: true,
+        },
+    ],
+  })
+
+  const [textToolTipPoint, setTextToolTipPoint] = useState([])
+  const [urlBscCsan, setUrlBscScan] = useState([])
+
+  useEffect(() => {
+      const fetchTransfers = async () => {
+          try {
+              const data = await getBurns();
+              const textTooltipData = 
+                  data.map(tx => 
+                      {
+                          return {
+                              line1: `Supply burnt: ${tx.supplyBurnt}`,
+                              line2: `Total supply: ${tx.totalSupply}`,
+                              line3: `Tx hash: ${tx.hash}`,
+                              line4: `Click to see the tx on bcscan.com`,
+                          }
+                      }
+                  ); 
+              setTextToolTipPoint(textTooltipData)
+
+              const urlBscScanData = data.map(tx => tx.url_bscscan); 
+              setUrlBscScan(urlBscScanData)
+
+              //Try with date like this : 
+              //new Date(transfer.timestamp).toLocaleString()
+              setChartData(prevState => ({
+                  ...prevState,
+                  labels: data.map(transfer => transfer.timestamp),
+                  datasets: [
+                      {
+                          ...prevState.datasets[0],
+                          data: data.map(transfer => transfer.totalSupply),
+                      },
+                  ],
+              }));
+          } catch (error) {
+              console.error('Error fetching transfers:', error)
+          }
+      };
+
+      fetchTransfers()
+  }, []);
+
+
+  //Options to display the chart
+  const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+          legend: {
+              position: 'top',
+              labels: {
+                  color: '#fdfaf6' // Legend text color
+              }
+          },
+          title: {
+              display: true,
+              text: 'Token Supply Over Time',
+              color: '#fdfaf6' // Title text color
+          },
+          tooltip: {
+              callbacks: {
+                  label: function(context) {
+                      const index = context.dataIndex
+                      const tooltipText = textToolTipPoint[index]
+                      return [tooltipText.line1, tooltipText.line2, tooltipText.line3, tooltipText.line4]
+                  }
+              }
+          }
+      },
+      scales: {
+          x: {
+              grid: {
+                  display: false,
+                  drawBorder: false,
+              },
+              ticks: {
+                  color: '#fdfaf6' // X-axis tick color
+              }
+          },
+          y: {
+              grid: {
+                  color: '#f0f0f0', // Light grey for Y-axis grid lines
+              },
+              ticks: {
+                  color: '#fdfaf6' // X-axis tick color
+              }
+          },
+      },
+      layout: {
+          padding: {
+              top: 20,
+              right: 20,
+              bottom: 20,
+              left: 20,
+          },
+      },
+      elements: {
+          line: {
+              borderWidth: 3, // Thicker line
+              borderCapStyle: 'round', // Round caps at the end of the line
+          },
+          point: {
+              borderWidth: 2,
+              radius: 4,
+              hitRadius: 10,
+              hoverRadius: 7,
+          }
+      },
+      backgroundColor: '#f0f0f0', // Light grey background
+      onHover: (event, chartElement) => {
+          event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+      },
+      onClick: (event, elements) => {
+          if (elements.length > 0) {
+              const randomUrl = getUrlBscScan();
+              window.open(randomUrl, '_blank');
+          }
+      },
+  }
+
+  const getUrlBscScan = () => {
+    // Define a list of random URLs
+    const urls = urlBscCsan
+    // Return a random URL from the list
+    return urls[Math.floor(Math.random() * urls.length)];
+  }
+
+
+  /******* */
   return (
     <div className="dataScience">
       <div className="dataScienceContainer">
@@ -90,6 +245,10 @@ const DataScience = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div style={{ margin: '10 10 10 10 auto', marginLeft: '200px', marginTop: '50px', maxWidth: '800px', width: '800px', height: '400px', background: 'rgb(29, 32, 45)' }}>
+          <Line data={chartData} options={options} />
         </div>
 
         <div className="dataScienceButton">
