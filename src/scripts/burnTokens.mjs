@@ -3,8 +3,10 @@
 const apiKey = 'GNY6X65WD9GSC1962Z6DKNCAVBJJT9GEZC'; // Replace with your BscScan API key
 const tokenAddress = '0x94d79c325268c898d2902050730f27a478c56cc1'; // Replace with the ERC20 token address
 const burnAddress = '0x0000000000000000000000000000000000000000'; // Common burn address
-const fromAddress1 = '0xe8831eaab999ea3f051ed2fd31891ab4ab259b0b'; // Replace with the source address
-const fromAddress2 = '0xf110dB08D35F76010d6B8d0c1717D946D0F4fCc4'; // Replace with the source address
+/** There are 3 addresses that can bun IMO tokens  */
+const fromAddress1 = '0xe8831eaab999ea3f051ed2fd31891ab4ab259b0b'; 
+const fromAddress2 = '0xf110dB08D35F76010d6B8d0c1717D946D0F4fCc4'; 
+const fromAddress3 = '0x0Da399352580b0C662AA4c98c8a2c2c2ea033251'; 
 const tokenDecimals = 18
 
 
@@ -13,14 +15,19 @@ export const getBurns = async () => {
         //Burns are made by 2 addresses so we need to get burns by these 2
         const url1 = `https://api.bscscan.com/api?module=account&action=tokentx&contractaddress=${tokenAddress}&address=${fromAddress1}&to=${burnAddress}&sort=asc&apikey=${apiKey}`;
         const url2 = `https://api.bscscan.com/api?module=account&action=tokentx&contractaddress=${tokenAddress}&address=${fromAddress2}&to=${burnAddress}&sort=asc&apikey=${apiKey}`;
+        const url3 = `https://api.bscscan.com/api?module=account&action=tokentx&contractaddress=${tokenAddress}&address=${fromAddress3}&to=${burnAddress}&sort=asc&apikey=${apiKey}`;
         const response1 = await fetch(url1);
         const response2 = await fetch(url2);
+        const response3 = await fetch(url3);
         const data1 = await response1.json();
         const data2 = await response2.json();
+        const data3 = await response3.json();
 
         console.log('DATA')
         console.log(data1)
         console.log(data2)
+        console.log(data3)
+
         // Filter and format transactions
         let burnTransfers1 = data1.result
             .filter(tx => tx.to == burnAddress)
@@ -28,7 +35,10 @@ export const getBurns = async () => {
         let burnTransfers2 = data2.result
             .filter(tx => tx.to == burnAddress)
 
-        const burnTransfers_ = [...burnTransfers1, ...burnTransfers2]
+        let burnTransfers3 = data3.result
+            .filter(tx => tx.to == burnAddress)
+
+        const burnTransfers_ = [...burnTransfers1, ...burnTransfers2, ...burnTransfers3]
         burnTransfers_.sort((a, b) => a.timeStamp - b.timeStamp);
                     
         // console.log('DATA BURNS SORTED')
