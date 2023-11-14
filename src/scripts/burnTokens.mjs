@@ -30,13 +30,13 @@ export const getBurns = async () => {
 
         // Filter and format transactions
         let burnTransfers1 = data1.result
-            .filter(tx => tx.to == burnAddress)
+            .filter(tx => tx.to === burnAddress)
             
         let burnTransfers2 = data2.result
-            .filter(tx => tx.to == burnAddress)
+            .filter(tx => tx.to === burnAddress)
 
         let burnTransfers3 = data3.result
-            .filter(tx => tx.to == burnAddress)
+            .filter(tx => tx.to === burnAddress)
 
         const burnTransfers_ = [...burnTransfers1, ...burnTransfers2, ...burnTransfers3]
         burnTransfers_.sort((a, b) => a.timeStamp - b.timeStamp);

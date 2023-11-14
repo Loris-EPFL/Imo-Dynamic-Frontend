@@ -1,12 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { getBurns } from '../../scripts/burnTokens.mjs'
 import { ReactComponent as IMOIcon } from "../../Icons/IMOIcon.svg";
 import { ReactComponent as MarketIcon } from "../../Icons/MarketIcon.svg";
 import { ReactComponent as CirculatingIcon } from "../../Icons/CirculatingIcon.svg";
 import { ReactComponent as Burned } from "../../Icons/Burned.svg";
 import { Language } from "../../Context";
-import { Line } from 'react-chartjs-2';
 import useApi from "../../hooks/useApi";
 
 import "./dataScience.css";

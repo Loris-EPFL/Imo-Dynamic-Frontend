@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { getBurns } from '../../scripts/burnTokens.mjs'
 import { Line } from 'react-chartjs-2';
 
-
 const SupplyChart = () => {
 
    /**** DISPLAY SUPPLY CHART *****/
@@ -15,6 +14,7 @@ const SupplyChart = () => {
             fill: false,
             backgroundColor: '#fdfaf6',
             borderColor: '#fdfaf6',
+            borderWidth: 0.5,
             pointBackgroundColor: '#fdfaf6',
             pointBorderColor: '#fdfaf6',
             pointHoverBackgroundColor: '#fdfaf6',
@@ -25,7 +25,7 @@ const SupplyChart = () => {
             pointRadius: 3,
             pointHitRadius: 10,
             tension: 0.4, // This adds some curvature to the line
-            //stepped: true,
+            lineTension: 0.1,
         },
     ],
   })
@@ -56,8 +56,14 @@ const SupplyChart = () => {
               console.log(urlBscScanData)
               setUrlBscScan(urlBscScanData)
 
-              let sum = data.reduce((accumulator, object) => accumulator + object.supplyBurnt, 0)
-              setTotalSupplyBurnt(sum)
+              //Total supply IMO burnt
+              let sumImo = data.reduce((accumulator, object) => accumulator + object.supplyBurnt, 0)
+              let sumImoValue = parseFloat(sumImo); 
+              let intValue = Math.trunc(sumImoValue); // Truncate decimal part
+
+                // Format with space as the thousand separator
+              let formattedTotalSupply = intValue.toLocaleString('en-US', { maximumFractionDigits: 0 }).replace(/,/g, ' ');
+              setTotalSupplyBurnt(formattedTotalSupply)
 
               //Try with date like this : 
               //new Date(transfer.timestamp).toLocaleString()
@@ -79,21 +85,17 @@ const SupplyChart = () => {
       fetchTransfers()
   }, [])
 
-
   //Options to display the chart
   const options = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
           legend: {
-              position: 'top',
-              labels: {
-                  color: '#fdfaf6' // Legend text color
-              }
+              display: false,
           },
           title: {
               display: true,
-              text: `Total supply burnt : ${totalSupplyBurnt}`,
+              text: ['TOTAL SUPPLY OVER TIME', '', `Total IMO burnt : ${totalSupplyBurnt}`],
               color: '#fdfaf6' // Title text color
           },
           tooltip: {
@@ -108,17 +110,32 @@ const SupplyChart = () => {
       },
       scales: {
           x: {
+            title: {
+                display: true,
+                text: 'DATE',
+                font: {
+                    weight: 'extrabold' // Adjust the font weight here
+                }
+              },
               grid: {
                   display: false,
                   drawBorder: false,
               },
               ticks: {
-                  color: '#fdfaf6' // X-axis tick color
+                  color: '#f0f0f0', // X-axis tick color
               }
           },
           y: {
+            title: {
+                display: true,
+                text: 'IMO',
+                font: {
+                    weight: 'bold' // Adjust the font weight here
+                }
+              },
               grid: {
                   color: '#f0f0f0', // Light grey for Y-axis grid lines
+                  borderWidth: 0
               },
               ticks: {
                   color: '#fdfaf6' // X-axis tick color
@@ -165,7 +182,16 @@ const SupplyChart = () => {
    
 
   return (
-    <div style={{ margin: '10 10 10 10 auto', marginLeft: '200px', marginTop: '50px', maxWidth: '800px', width: '800px', height: '400px', background: 'rgb(29, 32, 45)' }}>
+    <div style={
+        { 
+            margin: 'auto', 
+            maxWidth: '800px', 
+            width: '800px', 
+            height: '400px', 
+            background: 'rgb(29, 32, 45)',
+            border: '1px solid black', 
+            borderRadius: '15px'
+        }}>
         <Line data={chartData} options={options} />
     </div>
 
