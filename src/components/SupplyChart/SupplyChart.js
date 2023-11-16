@@ -9,7 +9,7 @@ const SupplyChart = () => {
     const { LanguageUse } = useContext(Language)
     const { t } = useTranslation()
 
-    /**** DISPLAY SUPPLY CHART *****/
+    /**** USE EFFECT DISPLAY SUPPLY CHART *****/
     const [chartData, setChartData] = useState({
         labels: [],
         datasets: [
@@ -34,7 +34,7 @@ const SupplyChart = () => {
             },
         ],
     })
-
+    
     const [textToolTipPoint, setTextToolTipPoint] = useState([])
     const [urlBscCsan, setUrlBscScan]             = useState([])
     const [totalSupplyBurnt, setTotalSupplyBurnt] = useState([])
@@ -43,7 +43,6 @@ const SupplyChart = () => {
         const fetchTransfers = async () => {
             try {
                 const data = await getBurns();
-                console.log('Language : ' + LanguageUse)
                 const line1 = 'Burntoken'
                 const line2 = 'TotalSupply'
                 const line3 = 'TxHash'
@@ -52,8 +51,8 @@ const SupplyChart = () => {
                     data.map(tx => 
                         {
                             return {
-                                line1: `${line1}: ${tx.supplyBurnt}`,
-                                line2: `${line2}: ${tx.totalSupply}`,
+                                line1: `${line1}: ${tx.supplyBurnt.toLocaleString('en-US', { maximumFractionDigits: 0 }).replace(/,/g, ' ')}`,
+                                line2: `${line2}: ${tx.totalSupply.toLocaleString('en-US', { maximumFractionDigits: 0 }).replace(/,/g, ' ')}`,
                                 line3: `${line3}: ${tx.hash}`,
                                 line4: `${line4}`,
                             }
@@ -62,8 +61,6 @@ const SupplyChart = () => {
                 setTextToolTipPoint(textTooltipData)
 
                 const urlBscScanData = data.map(tx => tx.url_bscscan)
-                console.log('URL')
-                console.log(urlBscScanData)
                 setUrlBscScan(urlBscScanData)
 
                 //Total supply IMO burnt
@@ -74,10 +71,11 @@ const SupplyChart = () => {
                 // Format with space as the thousand separator like US format
                 let formattedTotalSupply = imoSupplyValue.toLocaleString('en-US', { maximumFractionDigits: 0 }).replace(/,/g, ' ');
                 setTotalSupplyBurnt(formattedTotalSupply)
-                
+    
+                const dateLabels = data.map(transfer => (LanguageUse=='fr')?transfer.date_fr:transfer.date_en)
                 setChartData(prevState => ({
                     ...prevState,
-                    labels: data.map(transfer => transfer.timestamp),
+                    labels: dateLabels,
                     datasets: [
                         {
                             ...prevState.datasets[0],
@@ -91,7 +89,7 @@ const SupplyChart = () => {
         };
 
         fetchTransfers()
-    }, [])
+    }, [chartData, LanguageUse])
 
 
     //Translate tooltip text when hover a point in the Supply Chart
@@ -197,10 +195,7 @@ const SupplyChart = () => {
         },
     }
 
-    /**** END USE EFFECT TO DISPLAY SUPPLY CHART *****/
-   
-    // console.log(chartData)
-    // console.log(options)
+    
     return (
         <div style={
             { 

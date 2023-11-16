@@ -23,31 +23,30 @@ export const getBurns = async () => {
         const data2 = await response2.json();
         const data3 = await response3.json();
 
-        console.log('DATA')
-        console.log(data1)
-        console.log(data2)
-        console.log(data3)
-
         // Filter and format transactions
-        let burnTransfers1 = data1.result
+        let result1, result2, result3 = []
+        result1 = data1.result
+        result2 = data2.result
+        result3 = data3.result
+        let burnTransfers1 = result1
             .filter(tx => tx.to === burnAddress)
             
-        let burnTransfers2 = data2.result
+        let burnTransfers2 = result2
             .filter(tx => tx.to === burnAddress)
 
-        let burnTransfers3 = data3.result
+        let burnTransfers3 = result3
             .filter(tx => tx.to === burnAddress)
 
         const burnTransfers_ = [...burnTransfers1, ...burnTransfers2, ...burnTransfers3]
+        //Sort Burn transfers by date ASC
         burnTransfers_.sort((a, b) => a.timeStamp - b.timeStamp);
                     
-        // console.log('DATA BURNS SORTED')
-        // console.log(burnTransfers)
-
         const burnTransfers = burnTransfers_
             .map(tx => {
                 return {
-                    timestamp: formatDate(tx.timeStamp),
+                    timestamp: parseInt(tx.timeStamp),
+                    date_fr: timestampToFrenchFormat(tx.timeStamp),
+                    date_en: timestampToUSFormat(tx.timeStamp),
                     hash: tx.hash,
                     url_bscscan: `https://bscscan.com/tx/${tx.hash}`,
                     value: formatTokenValue(tx.value, tokenDecimals)
@@ -55,12 +54,11 @@ export const getBurns = async () => {
             })    
 
         
-        console.log('DATA BURNS')
-        console.log(burnTransfers)
-        
         //Add the birth of IMO with initial Supply at the beginning of the array
         burnTransfers.unshift({
-            timestamp: formatDate(1616243040),
+            timestamp: 1616243040,
+            date_fr: timestampToFrenchFormat(1616243040),
+            date_en: timestampToUSFormat(1616243040),
             hash: '0x4c00e3f6fa189341ec243bb16bfc4f7a4604d5fee05320f403f8331f78660c90',
             url_bscscan: `https://bscscan.com/tx/0x4c00e3f6fa189341ec243bb16bfc4f7a4604d5fee05320f403f8331f78660c90`,
             value: 0
@@ -68,7 +66,6 @@ export const getBurns = async () => {
 
         let initialSupply = 20000000 
         let result = transformArray(burnTransfers, initialSupply);
-        
         return result;
 
     } catch (error) {
@@ -77,6 +74,7 @@ export const getBurns = async () => {
     }
 };
 
+//------------------------------------------------------------------------------------------
 // Function tthat transforms the amount burnt by the remaining supply
 function transformArray(arr, initialSupply) {
     let currentSupply = initialSupply;
@@ -85,6 +83,8 @@ function transformArray(arr, initialSupply) {
         currentSupply -= obj.value;
         return {
             timestamp: obj.timestamp,
+            date_fr: obj.date_fr,
+            date_en: obj.date_en,
             hash: obj.hash,
             url_bscscan: obj.url_bscscan,
             totalSupply: currentSupply,
@@ -95,6 +95,7 @@ function transformArray(arr, initialSupply) {
 
 
 
+//------------------------------------------------------------------------------------------
 // Function to format token supply
 function formatTokenValue(value, decimals) {
     let formattedValue = value / Math.pow(10, decimals);
@@ -108,24 +109,40 @@ function formatTokenValue(value, decimals) {
     return formattedValue;
 }
 
-// Function to convert Unix timestamp to human-readable date
-// function formatDate(unixTimestamp) {
-//     const date = new Date(unixTimestamp * 1000);
-//     return date.toLocaleString(); // or use date.toISOString() for ISO format
-// }
+//------------------------------------------------------------------------------------------
+const isValidTimestamp = (input) => {
+    // Check if the input is a number
+    if (typeof input !== 'number') {
+        return false;
+    }
 
-function formatDate(timestamp) {
-    var date = new Date(timestamp * 1000);
-    var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    console.log(timestamp)
-    console.log('date')
-    const dt = date.toLocaleDateString('en-GB', options)
-    console.log(dt)
-    return dt
-}    
+    // Create a date object using the input
+    const date = new Date(input);
+
+    // Check if the date object represents a valid date
+    // The value is valid if it's not 'Invalid Date' and the input equals the date's timestamp
+    return !isNaN(date.getTime()) && date.getTime() === input;
+}
+
+//------------------------------------------------------------------------------------------
+const timestampToFrenchFormat = (timestamp) => {
+    const date = new Date(timestamp*1000);
+    // Format the date in DD/MM/YYYY format using template literals
+    const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+    return formattedDate;
+}
+
+//------------------------------------------------------------------------------------------
+const timestampToUSFormat = (timestamp) => {
+    const date = new Date(timestamp*1000);    
+    // Format the date in MM/DD/YYYY format using template literals
+    const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
+    return formattedDate;
+}
+
 
 // Usage (Try it with the command 'node src/scripts/burnTokens.js')
-
+/*
 (async () => {
     try {
         const transfers = await getBurns();
@@ -134,3 +151,4 @@ function formatDate(timestamp) {
         console.error('Error:', error);
     }
 })();
+*/
