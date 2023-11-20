@@ -1,16 +1,15 @@
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-
 import { ReactComponent as IMOIcon } from "../../Icons/IMOIcon.svg";
 import { ReactComponent as MarketIcon } from "../../Icons/MarketIcon.svg";
 import { ReactComponent as CirculatingIcon } from "../../Icons/CirculatingIcon.svg";
 import { ReactComponent as Burned } from "../../Icons/Burned.svg";
 import { Language } from "../../Context";
-
 import useApi from "../../hooks/useApi";
 
 import "./dataScience.css";
 import number_format from "../../scripts/util";
+import SupplyChart from "../SupplyChart/SupplyChart";
 
 const DataScience = () => {
   const { LanguageUse } = useContext(Language);
@@ -92,6 +91,8 @@ const DataScience = () => {
           </div>
         </div>
 
+        <SupplyChart/>
+        
         <div className="dataScienceButton">
           <div className="button" onClick={handlerExplore}>
             {t("Explore")}
