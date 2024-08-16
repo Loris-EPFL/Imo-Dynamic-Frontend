@@ -91,7 +91,7 @@ const DataScience = () => {
           </div>
         </div>
 
-        <SupplyChart/>
+        {/* <SupplyChart/> */}
         
         <div className="dataScienceButton">
           <div className="button" onClick={handlerExplore}>

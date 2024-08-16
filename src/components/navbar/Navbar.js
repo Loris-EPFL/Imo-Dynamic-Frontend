@@ -7,6 +7,7 @@ import DropDown from '../DropDown/DropDown'
 import { ReactComponent as Logo } from '../../Icons/Logo.svg'
 import { ReactComponent as MobileMenu } from '../../Icons/MobileMenu.svg'
 import { ReactComponent as Close } from '../../Icons/Close.svg'
+import {DynamicWidget} from "@dynamic-labs/sdk-react-core"
 
 import DropDownpng from '../../images/DropDown.png'
 import './navbar.css'
@@ -60,9 +61,9 @@ const Navbar = () => {
                HandleMobileMenu()
           }
           if (LanguageUse === 'en') {
-               window.open('http://imo-invest.com/docs/IMO_Whitepaper_V4.pdf')
+               window.open('http://imo-invest.com/docs/IMO_Whitepaper.pdf')
           } else {
-               window.open('http://imo-invest.com/docs/IMO_Livre_blanc_V4.pdf')
+               window.open('http://imo-invest.com/docs/IMO_Livre_blanc.pdf')
           }
      }
 
@@ -161,7 +162,13 @@ const Navbar = () => {
                                    FR
                               </div>
                          </div>
+                         
                     </div>
+
+                    <div className='navbarLink'>
+                         <DynamicWidget />
+                    </div>
+                    
                     <div className='navbarLanguage'>
                          <div
                               onClick={() => handlerLanguageChange('en')}

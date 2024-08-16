@@ -72,9 +72,9 @@ const Footer = () => {
      }
      const handlerWhite = () => {
           if (LanguageUse === 'en') {
-               window.open('http://imo-invest.com/docs/IMO_Whitepaper_V4.pdf')
+               window.open('http://imo-invest.com/docs/IMO_Whitepaper.pdf')
           } else {
-               window.open('http://imo-invest.com/docs/IMO_Livre_blanc_V4.pdf')
+               window.open('http://imo-invest.com/docs/IMO_Livre_blanc.pdf')
           }
      }
 
