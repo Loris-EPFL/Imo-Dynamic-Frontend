@@ -5,7 +5,7 @@ class BscScanApi {
   constructor() {
     this.client = createPublicClient({
       chain: bsc,
-      transport: http('https://bsc-dataseed.binance.org/')
+      transport: http('https://binance.llamarpc.com')
     });
 
     this.contractAddress = '0x94d79c325268c898d2902050730f27a478c56cc1';
