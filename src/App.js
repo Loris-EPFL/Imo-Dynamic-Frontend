@@ -13,6 +13,9 @@ import {
   createConfig,
   
 } from 'wagmi';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Stake from './pages/Stake/Stake';
+
 import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http } from 'viem';
@@ -44,14 +47,20 @@ const App = () => {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <DynamicWagmiConnector>
-          
-              <ApiProvider>
-                <Language.Provider value={{ LanguageUse, setLanguageUse }}>
+            <Router>
+              
+                <ApiProvider>
+                  <Language.Provider value={{ LanguageUse, setLanguageUse }}>
                   <Navbar />
-                  <Main />
-                  <Footer />
-                </Language.Provider>
-              </ApiProvider>
+                  <Routes>
+                  <Route path="/" element={<Main />} />
+                  <Route path="/Stake" component={<Stake />} />
+                  </Routes>
+                    <Footer />
+                  </Language.Provider>
+                </ApiProvider>
+                
+            </Router>
         </DynamicWagmiConnector>
         </QueryClientProvider>
       </WagmiProvider> 

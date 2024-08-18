@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+
 
 import { Language } from '../../Context'
 import DropDown from '../DropDown/DropDown'
@@ -15,6 +19,8 @@ import './navbar.css'
 const Navbar = () => {
      const { LanguageUse, setLanguageUse } = useContext(Language)
      const [Mobile, setMobile] = useState(false)
+     const navigate = useNavigate();
+
 
      const { t, i18n } = useTranslation()
      useEffect(() => {
@@ -88,6 +94,11 @@ const Navbar = () => {
           )
      }
 
+     const handleStake = () => {
+          console.log("stake")
+          navigate('/Stake');
+     }
+
      window.addEventListener('resize', WindowChange)
 
      if (Mobile) {
@@ -139,6 +150,11 @@ const Navbar = () => {
                          <div className='navbarLink' onClick={handleInvest}>
                               {t('Invest')}
                          </div>
+                         <div className='navbarLink' onClick={handleStake}>
+                              Stake
+                         </div>
+                         <Link to="/stake" className='navbarLink'>Stake</Link>
+
 
                          <div className={Mobile ? 'MobileLanguage' : 'navbarDN'}>
                               <div
