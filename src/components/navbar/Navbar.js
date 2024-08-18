@@ -153,8 +153,6 @@ const Navbar = () => {
                          <div className='navbarLink' onClick={handleStake}>
                               Stake
                          </div>
-                         <Link to="/stake" className='navbarLink'>Stake</Link>
-
 
                          <div className={Mobile ? 'MobileLanguage' : 'navbarDN'}>
                               <div
