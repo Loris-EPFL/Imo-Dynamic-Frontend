@@ -18,6 +18,8 @@ import './main.css'
 const Main = () => {
      return (
           <main className='main'>
+               <div id="animatedElement">
+
                <RealEstate />
                <DataScience />
                <Presentation />
@@ -31,6 +33,7 @@ const Main = () => {
                <Team />
                <Roadmap />
                <Animation />
+               </div>
           </main>
      )
 }

@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 import React, { useState } from 'react';
-import { useAccount, useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { parseEther } from 'viem';
 
 // Assuming you have the contract address
@@ -11,14 +12,14 @@ function DCBVaultInteraction({ abi }) {
   const [amount, setAmount] = useState('');
 
   // Read functions
-  const { data: balanceOf } = useContractRead({
+  const { data: balanceOf } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi,
     functionName: 'balanceOf',
     args: [BigInt(pid)],
   });
 
-  const { data: canUnstake } = useContractRead({
+  const { data: canUnstake } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi,
     functionName: 'canUnstake',
@@ -26,34 +27,34 @@ function DCBVaultInteraction({ abi }) {
   });
 
   // Write functions
-  const { write: deposit, data: depositData } = useContractWrite({
+  const { write: deposit, data: depositData } = useWriteContract({
     address: CONTRACT_ADDRESS,
     abi,
     functionName: 'deposit',
   });
 
-  const { write: withdraw, data: withdrawData } = useContractWrite({
+  const { write: withdraw, data: withdrawData } = useWriteContract({
     address: CONTRACT_ADDRESS,
     abi,
     functionName: 'withdraw',
   });
 
-  const { write: harvest, data: harvestData } = useContractWrite({
+  const { write: harvest, data: harvestData } = useWriteContract({
     address: CONTRACT_ADDRESS,
     abi,
     functionName: 'harvest',
   });
 
   // Wait for transaction
-  const { isLoading: isDepositLoading, isSuccess: isDepositSuccess } = useWaitForTransaction({
+  const { isLoading: isDepositLoading, isSuccess: isDepositSuccess } = useWaitForTransactionReceipt({
     hash: depositData?.hash,
   });
 
-  const { isLoading: isWithdrawLoading, isSuccess: isWithdrawSuccess } = useWaitForTransaction({
+  const { isLoading: isWithdrawLoading, isSuccess: isWithdrawSuccess } = useWaitForTransactionReceipt({
     hash: withdrawData?.hash,
   });
 
-  const { isLoading: isHarvestLoading, isSuccess: isHarvestSuccess } = useWaitForTransaction({
+  const { isLoading: isHarvestLoading, isSuccess: isHarvestSuccess } = useWaitForTransactionReceipt({
     hash: harvestData?.hash,
   });
 
