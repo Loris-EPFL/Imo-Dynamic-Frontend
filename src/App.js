@@ -17,17 +17,18 @@ import DCBVaultInteraction from './components/Stake/DCBVaultInteraction';
 import { WagmiProvider } from 'wagmi';
 import {QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { http } from 'viem';
-import { mainnet } from 'viem/chains';
+import { base, mainnet } from 'viem/chains';
 
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import useScrollManager from './hooks/useScrollManager'; // Import the custom hook
 
 // ... (rest of your imports and configurations)
 const config = createConfig({
-  chains: [mainnet],
+  chains: [mainnet, base],
   multiInjectedProviderDiscovery: false,
   transports: {
     [mainnet.id]: http(),
+    [base.id]: http('https://base.drpc.org'),
   },
 });
   
