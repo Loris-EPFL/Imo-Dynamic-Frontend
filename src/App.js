@@ -28,7 +28,7 @@ const config = createConfig({
   multiInjectedProviderDiscovery: false,
   transports: {
     [mainnet.id]: http(),
-    [base.id]: http('https://base.drpc.org'),
+    [base.id]: http(),
   },
 });
   

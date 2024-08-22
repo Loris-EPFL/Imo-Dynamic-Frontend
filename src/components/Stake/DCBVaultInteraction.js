@@ -17,8 +17,9 @@ function DCBVaultInteraction() {
   const { data: writeData, error: writeError, isPending, writeContract } = useWriteContract() 
   const {data: readData, error: readError, read} = useReadContract()
 
-  
+  const bypassApprove = false;
 
+  //TODO make it prettier, add loading state and confirmation messages.
 
 
   // Read functions
@@ -59,29 +60,38 @@ function DCBVaultInteraction() {
     functionName: 'approve',
     args: [CONTRACT_ADDRESS, parseEther(amount)]
     
-  })
-  console.log("approve")
-};
+    })
+    console.log("approve")
+  };
   const deposit = () => {writeContract({
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'deposit',
     args: [BigInt(pid), parseEther(amount)]
     
-  })
-  console.log("deposit")
-};
+    })
+    console.log("deposit")
+  };
 
   const withdraw = () => {writeContract({
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'withdraw',
     args: [BigInt(pid), parseEther(amount)],
+    })
+    console.log("can Unstake", canUnstake)
+    console.log("withdraw")
+  };
 
+  const withdrawAll = () => {writeContract({
+    address: CONTRACT_ADDRESS,
+    abi: stakeAbi,
+    functionName: 'withdrawAll',
+    args: [BigInt(pid)],
   })
   console.log("can Unstake", canUnstake)
   console.log("withdraw")
-};
+  };
 
   const harvest = () => {writeContract({
     address: CONTRACT_ADDRESS,
@@ -90,6 +100,15 @@ function DCBVaultInteraction() {
     args: [BigInt(pid)],
   })
   console.log("harvest")
+  };
+
+  const harvestAll = () => {writeContract({
+    address: CONTRACT_ADDRESS,
+    abi: stakeAbi,
+    functionName: 'harvestAll',
+    args: [],
+  })
+  console.log("harvestAll")
   };
 
   const zapEtherAndStake = () => {writeContract({
@@ -117,18 +136,22 @@ function DCBVaultInteraction() {
 
   const handleApprove = () => {
     approve();
+    console.log(writeError);
   };
 
   const handleDeposit = () => {
     deposit();
+    console.log(writeError);
   };
 
   const handleWithdraw = () => {
     withdraw();
+    console.log(writeError);
   };
 
   const handleHarvest = () => {
     harvest();
+    console.log(writeError);
   };
 
   return (
@@ -146,9 +169,7 @@ function DCBVaultInteraction() {
       </div>
 
       <div>
-        <button onClick={handleApprove} >
-          Approve
-        </button>
+       
       </div>
 
       <div>
@@ -158,10 +179,16 @@ function DCBVaultInteraction() {
       </div>
       
       <div>
+        {allowance >= amount || bypassApprove ? 
         <button onClick={handleDeposit} disabled={isDepositLoading}>
           {isDepositLoading ? 'Depositing...' : 'Deposit'}
         </button>
-        {isDepositSuccess && <span>Deposit successful!</span>}
+         :
+        <button onClick={handleApprove} >
+        Approve
+        </button>
+        }
+        
       </div>
       
       <div>
@@ -170,10 +197,24 @@ function DCBVaultInteraction() {
         </button>
         {isWithdrawSuccess && <span>Withdraw successful!</span>}
       </div>
+
+      <div>
+        <button onClick={withdrawAll} disabled={isWithdrawLoading}>
+          {isWithdrawLoading ? 'Withdrawing...' : 'Withdraw All'}
+        </button>
+        {isWithdrawSuccess && <span>Withdraw successful!</span>}
+      </div>
       
       <div>
         <button onClick={handleHarvest} disabled={isHarvestLoading}>
           {isHarvestLoading ? 'Harvesting...' : 'Harvest'}
+        </button>
+        {isHarvestSuccess && <span>Harvest successful!</span>}
+      </div>
+
+      <div>
+        <button onClick={harvestAll} disabled={isHarvestLoading}>
+          {isHarvestLoading ? 'Harvesting...' : 'Harvest All'}
         </button>
         {isHarvestSuccess && <span>Harvest successful!</span>}
       </div>
