@@ -13,6 +13,7 @@ import { createConfig } from 'wagmi';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Stake from './pages/Stake/Stake';
 import DCBVaultInteraction from './components/Stake/DCBVaultInteraction';
+import DCBVaultPools from "./components/Stake/DCBVaultPools";
 
 import { WagmiProvider } from 'wagmi';
 import {QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -44,8 +45,8 @@ const AppContent = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/Stake" element={<Stake />} />
-        </Routes>
+          <Route path="/Pools" element={<DCBVaultPools />} />
+        </Routes> 
         <Footer />
       </Language.Provider>
     </ApiProvider>

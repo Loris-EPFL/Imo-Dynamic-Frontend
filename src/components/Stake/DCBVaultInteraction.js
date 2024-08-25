@@ -1,17 +1,18 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { parseEther } from 'viem';
+import { parseEther, parseGwei } from 'viem';
 import stakeAbi from "../../abi/DCBVault_abi.json"
 import bptAbi from "../../abi/Balancer_BPT.json"
+import { formatBigIntToDecimal } from './formatBigIntToDecimal';
 
 // Assuming you have the contract address
 const CONTRACT_ADDRESS = '0xff1eB5FFd66a308E46856668617D68d06903804c'; // Replace with your contract address
 const BALANCER_BPT_ADDRESS = '0x7120fD744CA7B45517243CE095C568Fd88661c66';
 
-function DCBVaultInteraction() {
+function DCBVaultInteraction({ poolId }) {
   const { address } = useAccount();
-  const [pid, setPid] = useState('0');
+  //const [pid, setPid] = useState(0);
   const [amount, setAmount] = useState('');
 
   const { data: writeData, error: writeError, isPending, writeContract } = useWriteContract() 
@@ -27,14 +28,14 @@ function DCBVaultInteraction() {
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'balanceOf',
-    args: [BigInt(pid)],
+    args: [poolId],
   });
 
   const { data: canUnstake } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'canUnstake',
-    args: [address, BigInt(pid)],
+    args: [address, poolId],
   });
 
   const {data: allowance} = useReadContract({
@@ -67,7 +68,7 @@ function DCBVaultInteraction() {
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'deposit',
-    args: [BigInt(pid), parseEther(amount)]
+    args: [poolId, parseEther(amount)]
     
     })
     console.log("deposit")
@@ -77,7 +78,7 @@ function DCBVaultInteraction() {
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'withdraw',
-    args: [BigInt(pid), parseEther(amount)],
+    args: [poolId, parseEther(amount)],
     })
     console.log("can Unstake", canUnstake)
     console.log("withdraw")
@@ -87,7 +88,7 @@ function DCBVaultInteraction() {
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'withdrawAll',
-    args: [BigInt(pid)],
+    args: [poolId],
   })
   console.log("can Unstake", canUnstake)
   console.log("withdraw")
@@ -97,7 +98,7 @@ function DCBVaultInteraction() {
     address: CONTRACT_ADDRESS,
     abi: stakeAbi,
     functionName: 'harvest',
-    args: [BigInt(pid)],
+    args: [poolId],
   })
   console.log("harvest")
   };
@@ -116,7 +117,7 @@ function DCBVaultInteraction() {
     abi: stakeAbi,
     functionName: 'zapEtherAndStakeIMO',
     value: parseEther(amount),
-    args: [BigInt(pid)],
+    args: [poolId],
   })
   console.log("zap Ether and Stake")
   };
@@ -154,17 +155,17 @@ function DCBVaultInteraction() {
     console.log(writeError);
   };
 
+
   return (
     <div>
       <h2>DCB Vault Interaction</h2>
       
       <div>
-        <label>Pool ID: </label>
-        <input type="number" value={pid} onChange={(e) => setPid(e.target.value)} />
+        <label>Pool ID: {poolId}</label>
       </div>
       
       <div>
-        <label>Amount: </label>
+        <label>Amount to Stake: </label>
         <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} />
       </div>
 
@@ -179,7 +180,7 @@ function DCBVaultInteraction() {
       </div>
       
       <div>
-        {allowance >= amount || bypassApprove ? 
+        {allowance >= parseGwei(amount) || bypassApprove ? 
         <button onClick={handleDeposit} disabled={isDepositLoading}>
           {isDepositLoading ? 'Depositing...' : 'Deposit'}
         </button>
@@ -220,10 +221,10 @@ function DCBVaultInteraction() {
       </div>
       
       <div>
-        <p>BPT Balance: {BPTbalanceOf ? BPTbalanceOf.toString() : '0'}</p>
-        <p>Stake Balance: {balanceOf ? balanceOf.toString() : '0'}</p>
+        <p>BPT Balance: {BPTbalanceOf ? formatBigIntToDecimal(BPTbalanceOf).toString() : '0'}</p>
+        <p>Stake Balance: {balanceOf ? formatBigIntToDecimal(balanceOf).toString() : '0'}</p>
 
-        <p>Allowance: {allowance ? allowance.toString() : '0'}</p>
+        <p>Allowance: {allowance ? formatBigIntToDecimal(allowance).toString() : '0'}</p>
         <p>Can Unstake: {canUnstake !== undefined ? (canUnstake ? 'Yes' : 'No') : 'Loading...'}</p>
       </div>
     </div>
