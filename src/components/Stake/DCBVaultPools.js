@@ -7,6 +7,7 @@ import Stake from "./DCBVaultInteraction";
 import PoolInfo from './PoolInfos';
 import stakeAbi from "../../abi/DCBVault_abi.json"
 import {Web3ToastNotification} from '../ErrorDisplay/Web3ToastNotification'
+import './DCBVaultPools.css'
 
 
 
@@ -19,7 +20,6 @@ function DCBVaultPools() {
   const [poolLength, setPoolLength] = useState(0);
 
   const { data: writeHarvestAllData, error: writeHarvestAllError, isPending: isHarvestAllPending, writeContract: writeHarvestAllContract } = useWriteContract();
-  const { data: writeWithdrawAllData, error: writeWithdrawAllError, isPending: isWithdrawAllPending, writeContract: writeWithdrawAllContract } = useWriteContract();
 
 
   // Read pool length
@@ -28,6 +28,16 @@ function DCBVaultPools() {
     abi: masterchefAbi,
     functionName: 'poolLength',
   });
+
+  useEffect(() => {
+    const currentError =  writeHarvestAllError;
+    if (currentError) {
+      setError(currentError);
+      console.log(currentError.details || currentError.message);
+    } else {
+      setError(null);
+    }
+  }, [writeHarvestAllError]);
   
 
   useEffect(() => {
@@ -53,42 +63,35 @@ function DCBVaultPools() {
     }
   };
 
-  const withdrawAll = async () => {
-    try {
-      await writeWithdrawAllContract({
-        address: CONTRACT_ADDRESS,
-        abi: stakeAbi,
-        functionName: 'withdrawAll',
-      });
-    } catch (err) {
-      handleError(err);
-    }
-  };
+  
 
   
 
   return (
     <div>
+    <div className="dcb-vault-pools">
       <h2>DCB Vault Pools</h2>
       <p>Total Pools: {poolLength}</p>
 
       <Web3ToastNotification showError={error} errorMessage={error?.details || error?.message || ''} />
 
-
-      <button onClick={withdrawAll} disabled={isWithdrawAllPending}>
-              {isWithdrawAllPending ? 'Withdrawing All...' : 'Withdraw All'}
-      </button>
-
-      <button onClick={harvestAll} disabled={isHarvestAllPending}>
-              {isHarvestAllPending ? 'Harvesting All...' : 'Harvest All'}
+      <button 
+        className="harvest-all-button"
+        onClick={harvestAll} 
+        disabled={isHarvestAllPending}
+      >
+        {isHarvestAllPending ? 'Harvesting All...' : 'Harvest All'}
       </button>
       
-      <ul>
-        {[...Array(poolLength)].map((_, index) => (
-          <PoolInfo key={index} poolId={index} />
-        ))}
-      </ul>
+      
     </div>
+
+      <ul >
+      {[...Array(poolLength)].map((_, index) => (
+        <PoolInfo key={index} poolId={index} />
+      ))}
+      </ul>
+</div>
   );
 }
 

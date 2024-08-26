@@ -12,13 +12,18 @@ const BALANCER_BPT_ADDRESS = '0x7120fD744CA7B45517243CE095C568Fd88661c66';
 function DCBVaultInteraction({ poolId }) {
   const { address } = useAccount();
   const [amount, setAmount] = useState('');
-  const [error, setError] = useState(null);
+  const [zapError, setZapError] = useState(null);
+  const [approveError, setApproveError] = useState(null);
+  const [depositError, setDepositError] = useState(null);
+  const [withdrawError, setWithdrawError] = useState(null);
+  const [harvestError, setHarvestError] = useState(null);
+  const [withdrawAllError, setWithdrawAllError] = useState(null);
 
   const { data: writeZapData, error: writeZapError, isPending: isZapPending, writeContract: writeZapContract } = useWriteContract();
   const { data: writeApproveData, error: writeApproveError, isPending: isApprovePending, writeContract: writeApproveContract } = useWriteContract();
   const { data: writeDepositData, error: writeDepositError, isPending: isDepositPending, writeContract: writeDepositContract } = useWriteContract();
   const { data: writeWithdrawData, error: writeWithdrawError, isPending: isWithdrawPending, writeContract: writeWithdrawContract } = useWriteContract();
-
+  const { data: writeWithdrawAllData, error: writeWithdrawAllError, isPending: isWithdrawAllPending, writeContract: writeWithdrawAllContract } = useWriteContract();
   const { data: writeHarvestData, error: writeHarvestError, isPending: isHarvestPending, writeContract: writeHarvestContract } = useWriteContract();
  
 
@@ -26,18 +31,17 @@ function DCBVaultInteraction({ poolId }) {
 
 
   useEffect(() => {
-    const currentError = writeZapError || writeApproveError || writeDepositError || writeWithdrawError || writeHarvestError;
-    if (currentError) {
-      setError(currentError);
-      console.log(currentError.details || currentError.message);
-    } else {
-      setError(null);
-    }
-  }, [writeZapError, writeApproveError, writeDepositError, writeWithdrawError, writeHarvestError]);
+    if (writeZapError) setZapError(writeZapError);
+    if (writeApproveError) setApproveError(writeApproveError);
+    if (writeDepositError) setDepositError(writeDepositError);
+    if (writeWithdrawError) setWithdrawError(writeWithdrawError);
+    if (writeHarvestError) setHarvestError(writeHarvestError);
+    if (writeWithdrawAllError) setWithdrawAllError(writeWithdrawAllError);
+  }, [writeZapError, writeApproveError, writeDepositError, writeWithdrawError, writeHarvestError, writeWithdrawAllError]);
 
-  const handleError = (err) => {
+  const handleError = (err, setErrorFunction) => {
     console.error(err);
-    setError(err);
+    setErrorFunction(err);
   };
 
   // Read functions
@@ -72,6 +76,8 @@ function DCBVaultInteraction({ poolId }) {
 
 
   const approve = async () => {
+    setApproveError(null);
+
     try {
       await writeApproveContract({
         address: BALANCER_BPT_ADDRESS,
@@ -80,11 +86,12 @@ function DCBVaultInteraction({ poolId }) {
         args: [CONTRACT_ADDRESS, parseEther(amount)]
       });
     } catch (err) {
-      handleError(err);
+      handleError(err, setApproveError);
     }
   };
 
   const deposit = async () => {
+    setDepositError(null);
     try {
       await writeDepositContract({
         address: CONTRACT_ADDRESS,
@@ -93,11 +100,12 @@ function DCBVaultInteraction({ poolId }) {
         args: [poolId, parseEther(amount)]
       });
     } catch (err) {
-      handleError(err);
+      handleError(err, setDepositError);
     }
   };
 
   const withdraw = async () => {
+    setWithdrawError(null);
     try {
       await writeWithdrawContract({
         address: CONTRACT_ADDRESS,
@@ -106,13 +114,14 @@ function DCBVaultInteraction({ poolId }) {
         args: [poolId, parseEther(amount)]
       });
     } catch (err) {
-      handleError(err);
+      handleError(err, setWithdrawError);
     }
   };
 
   
 
   const harvest = async () => {
+    setHarvestError(null);
     try {
       await writeHarvestContract({
         address: CONTRACT_ADDRESS,
@@ -121,13 +130,14 @@ function DCBVaultInteraction({ poolId }) {
         args: [poolId]
       });
     } catch (err) {
-      handleError(err);
+      handleError(err, setHarvestError);
     }
   };
 
   
 
   const zapEtherAndStake = async () => {
+    setZapError(null);
     try {
       await writeZapContract({
         address: CONTRACT_ADDRESS,
@@ -137,7 +147,21 @@ function DCBVaultInteraction({ poolId }) {
         args: [poolId]
       });
     } catch (err) {
-      handleError(err);
+      handleError(err, setZapError);
+    }
+  };
+
+  const withdrawAll = async () => {
+    setWithdrawAllError(null);
+    try {
+      await writeWithdrawAllContract({
+        address: CONTRACT_ADDRESS,
+        abi: stakeAbi,
+        functionName: 'withdrawAll',
+        args: [poolId]
+      });
+    } catch (err) {
+      handleError(err, setWithdrawAllError);
     }
   };
 
@@ -145,7 +169,12 @@ function DCBVaultInteraction({ poolId }) {
 
   return (
     <div>
-      <Web3ToastNotification showError={!!error} errorMessage={error?.details || error?.message || ''} />
+      <Web3ToastNotification showError={!!zapError} errorMessage={zapError?.details || zapError?.message || ''} />
+      <Web3ToastNotification showError={!!approveError} errorMessage={approveError?.details || approveError?.message || ''} />
+      <Web3ToastNotification showError={!!depositError} errorMessage={depositError?.details || depositError?.message || ''} />
+      <Web3ToastNotification showError={!!withdrawError} errorMessage={withdrawError?.details || withdrawError?.message || ''} />
+      <Web3ToastNotification showError={!!harvestError} errorMessage={harvestError?.details || harvestError?.message || ''} />
+      <Web3ToastNotification showError={!!withdrawAllError} errorMessage={withdrawAllError?.details || withdrawAllError?.message || ''} />
       <div className="vault-interaction-wrapper">
         <div className="vault-interaction">
           <h2>DCB Vault Interaction</h2>
@@ -182,6 +211,10 @@ function DCBVaultInteraction({ poolId }) {
             
             <button onClick={harvest} disabled={isHarvestPending}>
               {isHarvestPending ? 'Harvesting...' : 'Harvest'}
+            </button>
+
+            <button onClick={withdrawAll} disabled={isWithdrawAllPending}>
+              {isWithdrawAllPending ? 'Withdrawing All...' : 'Withdraw All'}
             </button>
 
             
