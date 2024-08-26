@@ -1,0 +1,80 @@
+/* DCBVaultInteraction.css */
+.vault-interaction-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .vault-interaction {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+  
+  .vault-interaction h2 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .vault-interaction div {
+    margin-bottom: 15px;
+  }
+  
+  .vault-interaction label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .vault-interaction input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    gap: 10px;
+    justify-content: space-between;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    padding-bottom: 10px; /* Add some padding for the scrollbar */
+  }
+  
+  .vault-interaction button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1 1 0; /* Equal width for all buttons */
+    min-width: 100px; /* Minimum width for buttons */
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+  
+  .vault-interaction button:hover {
+    background-color: #0056b3;
+  }
+  
+  .vault-interaction button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  /* Add responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .button-container {
+      flex-wrap: wrap;
+    }
+  
+    .vault-interaction button {
+      flex: 1 1 calc(50% - 5px); /* Two buttons per row on smaller screens */
+    }
+  }

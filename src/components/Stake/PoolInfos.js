@@ -1,15 +1,18 @@
 /* eslint-disable no-undef */
 
-import React from 'react';
+// PoolInfo.jsx
+import React, { useState } from 'react';
 import { useReadContract } from 'wagmi';
 import masterchefAbi from "../../abi/DCBMasterChef.json";
 import DCBVaultInteraction from './DCBVaultInteraction';
 import { formatBigIntToDecimal } from './formatBigIntToDecimal';
-
+import './PoolInfos.css';
 
 const CONTRACT_ADDRESS = '0xFFa471d13DF6e912AE9b18d652bB0C7f972CCa76';
 
 function PoolInfo({ poolId }) {
+  const [showInteraction, setShowInteraction] = useState(false);
+
   const { data: poolInfo } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: masterchefAbi,
@@ -19,27 +22,37 @@ function PoolInfo({ poolId }) {
 
   if (!poolInfo) return <p>Loading pool {poolId} info...</p>;
 
-  // Convert timestamp to readable date
   const formatDate = (timestamp) => {
     const time = parseInt(timestamp);
-    const date = new Date(Number(time * 1000)); // Multiply by 1000 to convert seconds to milliseconds
-    return date.toLocaleString(); // This will use the user's locale settings for formatting
+    const date = new Date(Number(time * 1000));
+    return date.toLocaleString();
   };
 
-  
- 
+  const toggleInteraction = () => {
+    setShowInteraction(!showInteraction);
+  };
 
   return (
-    <li>
-      <h3>Pool {poolId}</h3>
-      <p>APY: {poolInfo[0].toString()} %</p>
-      <p>Lock Period: {poolInfo[1].toString()} days</p>
-      <p>Total Deposited: {formatBigIntToDecimal(poolInfo[2]).toString()} BPT</p>
-      <p>Start Date: {formatDate(poolInfo[3])}</p>
-      <p>End Date: {formatDate(poolInfo[4])}</p>
-      <p>Hard Cap: {formatBigIntToDecimal(poolInfo[5]).toString()}</p>
-        <DCBVaultInteraction poolId={poolId}/>
-    </li>
+    <div>
+      <div className="pool-card">
+        <h3 className="pool-title">Pool {poolId}</h3>
+        
+        <div className="pool-info-container">
+          <button className="toggle-interaction" onClick={toggleInteraction}>
+            {showInteraction ? 'Close' : 'Stake'}
+          </button>
+          <p className="pool-info"><strong>APY:</strong> {poolInfo[0].toString()}%</p>
+          <p className="pool-info"><strong>Lock Period:</strong> {poolInfo[1].toString()} days</p>
+          <p className="pool-info"><strong>Total Deposited:</strong> {formatBigIntToDecimal(poolInfo[2]).toString()} BPT</p>
+          <p className="pool-info"><strong>Start Date:</strong> {formatDate(poolInfo[3])}</p>
+          <p className="pool-info"><strong>End Date:</strong> {formatDate(poolInfo[4])}</p>
+          <p className="pool-info"><strong>Hard Cap:</strong> {formatBigIntToDecimal(poolInfo[5]).toString()}</p>
+          
+        </div>
+      </div>
+      
+      {showInteraction && <DCBVaultInteraction poolId={poolId}/>}
+    </div>
   );
 }
 

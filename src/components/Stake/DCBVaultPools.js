@@ -1,16 +1,26 @@
 
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useReadContract , useWriteContract} from 'wagmi';
 import masterchefAbi from "../../abi/DCBMasterChef.json";
 import Stake from "./DCBVaultInteraction";
 import PoolInfo from './PoolInfos';
+import stakeAbi from "../../abi/DCBVault_abi.json"
+import {Web3ToastNotification} from '../ErrorDisplay/Web3ToastNotification'
+
+
 
 const CONTRACT_ADDRESS = '0xFFa471d13DF6e912AE9b18d652bB0C7f972CCa76'; // Replace with your contract address
 
 function DCBVaultPools() {
   const { address } = useAccount();
+  const [error, setError] = useState(null);
+
   const [poolLength, setPoolLength] = useState(0);
+
+  const { data: writeHarvestAllData, error: writeHarvestAllError, isPending: isHarvestAllPending, writeContract: writeHarvestAllContract } = useWriteContract();
+  const { data: writeWithdrawAllData, error: writeWithdrawAllError, isPending: isWithdrawAllPending, writeContract: writeWithdrawAllContract } = useWriteContract();
+
 
   // Read pool length
   const { data: poolLengthData } = useReadContract({
@@ -26,12 +36,52 @@ function DCBVaultPools() {
     }
   }, [poolLengthData]);
 
+  const handleError = (err) => {
+    console.error(err);
+    setError(err);
+  };
+
+  const harvestAll = async () => {
+    try {
+      await writeHarvestAllContract({
+        address: CONTRACT_ADDRESS,
+        abi: stakeAbi,
+        functionName: 'harvestAll',
+      });
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
+  const withdrawAll = async () => {
+    try {
+      await writeWithdrawAllContract({
+        address: CONTRACT_ADDRESS,
+        abi: stakeAbi,
+        functionName: 'withdrawAll',
+      });
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
   
 
   return (
     <div>
       <h2>DCB Vault Pools</h2>
       <p>Total Pools: {poolLength}</p>
+
+      <Web3ToastNotification showError={error} errorMessage={error?.details || error?.message || ''} />
+
+
+      <button onClick={withdrawAll} disabled={isWithdrawAllPending}>
+              {isWithdrawAllPending ? 'Withdrawing All...' : 'Withdraw All'}
+      </button>
+
+      <button onClick={harvestAll} disabled={isHarvestAllPending}>
+              {isHarvestAllPending ? 'Harvesting All...' : 'Harvest All'}
+      </button>
       
       <ul>
         {[...Array(poolLength)].map((_, index) => (
