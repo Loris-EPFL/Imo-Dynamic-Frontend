@@ -1,5 +1,5 @@
 .navbar {
-     margin-top: 30px;
+     margin-top: 20px;
      height: 70px;
      display: flex;
      justify-content: center;
@@ -22,8 +22,9 @@
      padding-left: 24px;
      flex: 10%;
      display: flex;
-     align-items: flex-end;
+     align-items: center; /* Changed from flex-end to center */
      justify-content: flex-start;
+     margin-bottom: 10px;
 }
 
 .navbarLogo {
@@ -31,20 +32,22 @@
      height: auto;
 }
 
+
 /* MENU */
 
 .navbarMenu {
      flex: 60%;
      display: flex;
-     align-items: flex-end;
+     align-items: center; /* Changed from flex-end to center */
      justify-content: center;
-     padding: 0 0px;
+     padding: 0;
+     margin-top: 10px;
 }
 
 .navbarLink {
-     flex: auto;
-     margin: 0px 15px;
-     display: flex;
+     flex: 0 1 auto; /* Changed from auto to 0 1 auto */
+     margin: 0 10px; /* Added horizontal margin */
+     display: inline-flex; /* Changed from flex to inline-flex */
      align-items: center;
      font-size: 20px;
      font-weight: 400;
@@ -73,17 +76,14 @@
      opacity: 1;
 }
 
-/* LANGUAGE */
 
+/* LANGUAGE */
 .navbarLanguage {
      flex: 15%;
      display: flex;
-     align-items: flex-end;
+     align-items: center; /* Changed from flex-end to center */
      justify-content: flex-end;
-}
-
-.navbarLanguageSelect:hover {
-     opacity: 0.4;
+     margin-top: 12px;
 }
 
 .navbarLanguageSelect {
@@ -92,7 +92,14 @@
      font-size: 22px;
      cursor: pointer;
      margin-left: 30px;
+     display: inline-flex; /* Added this line */
+     align-items: center; /* Added this line */
 }
+
+.navbarLanguageSelect:hover {
+     opacity: 0.4;
+}
+
 
 .activeLanguage {
      font-weight: 800;
