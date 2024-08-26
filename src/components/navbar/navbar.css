@@ -117,6 +117,16 @@
      display: none;
 }
 
+.dynamic-shadow-dom {
+     --dynamic-text-size-button-primary: 18px; /* Adjust text size */
+     --dynamic-connect-button-padding: 12px 20px; /* Adjust padding */
+   }
+   
+.dynamic-shadow-dom .dynamic-connect-button {
+     width: 200px; /* Set specific width */
+     height: 50px; /* Set specific height */
+   }
+
 /* ANIMATION */
 
 @keyframes fade {
