@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Stake from './pages/Stake/Stake';
 import DCBVaultInteraction from './components/Stake/DCBVaultInteraction';
 import DCBVaultPools from "./components/Stake/DCBVaultPools";
+import "./App.css"
 
 import { WagmiProvider } from 'wagmi';
 import {QueryClientProvider, QueryClient } from '@tanstack/react-query';
