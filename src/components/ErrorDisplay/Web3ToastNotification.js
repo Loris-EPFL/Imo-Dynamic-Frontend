@@ -47,14 +47,16 @@ const styles = `
   }
 `;
 
-export const Web3ToastNotification = ({ showError = false, errorMessage =''}) => {
+export const Web3ToastNotification = ({ showToast = false,  toastMessage =''}) => {
+  //console.log('Rendering toast:', { showToast, toastMessage }); // Add this log
+
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
-    if (showError && errorMessage) {
-      addToast(errorMessage);
+    if (showToast && toastMessage) {
+      addToast(toastMessage);
     }
-  }, [showError, errorMessage]);
+  }, [showToast, toastMessage]);
 
   const addToast = (message) => {
     const id = Date.now();
@@ -81,32 +83,3 @@ export const Web3ToastNotification = ({ showError = false, errorMessage =''}) =>
   );
 };
 
-// Example usage
-const ExampleApp = () => {
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const triggerError = (message) => {
-    setErrorMessage(message);
-    setShowError(true);
-    // Reset showError after a brief delay to allow for repeated triggers
-    setTimeout(() => setShowError(false), 100);
-  };
-
-  return (
-    <div>
-      <Web3ToastNotification showError={showError} errorMessage={errorMessage} />
-      <button className="button" onClick={() => triggerError('Transaction failed. Please try again.')}>
-        Show Transaction Error
-      </button>
-      <button className="button" onClick={() => triggerError('Network error. Check your connection.')}>
-        Show Network Error
-      </button>
-      <button className="button" onClick={() => triggerError('Insufficient funds for gas fee.')}>
-        Show Gas Fee Error
-      </button>
-    </div>
-  );
-};
-
-export default ExampleApp;

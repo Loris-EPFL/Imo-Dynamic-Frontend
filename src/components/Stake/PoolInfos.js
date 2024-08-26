@@ -7,14 +7,14 @@ import masterchefAbi from "../../abi/DCBMasterChef.json";
 import DCBVaultInteraction from './DCBVaultInteraction';
 import { formatBigIntToDecimal } from './formatBigIntToDecimal';
 import './PoolInfos.css';
+import { DECUBATE_MSC_ADDRESS } from './ContractAdress';
 
-const CONTRACT_ADDRESS = '0xFFa471d13DF6e912AE9b18d652bB0C7f972CCa76';
 
 function PoolInfo({ poolId }) {
   const [showInteraction, setShowInteraction] = useState(false);
 
   const { data: poolInfo } = useReadContract({
-    address: CONTRACT_ADDRESS,
+    address: DECUBATE_MSC_ADDRESS,
     abi: masterchefAbi,
     functionName: 'poolInfo',
     args: [BigInt(poolId)],
