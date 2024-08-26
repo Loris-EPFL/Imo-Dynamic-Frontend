@@ -9,37 +9,54 @@ import {
   DynamicWidget,
 } from "@dynamic-labs/sdk-react-core";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
-import {
-  createConfig,
-  
-} from 'wagmi';
+import { createConfig } from 'wagmi';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Stake from './pages/Stake/Stake';
+import DCBVaultInteraction from './components/Stake/DCBVaultInteraction';
+import DCBVaultPools from "./components/Stake/DCBVaultPools";
 
 import { WagmiProvider } from 'wagmi';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { http } from 'viem';
-import { mainnet } from 'viem/chains';
+import { base, mainnet } from 'viem/chains';
 
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+import useScrollManager from './hooks/useScrollManager'; // Import the custom hook
 
+// ... (rest of your imports and configurations)
 const config = createConfig({
-  chains: [mainnet],
+  chains: [mainnet, base],
   multiInjectedProviderDiscovery: false,
   transports: {
     [mainnet.id]: http(),
+    [base.id]: http(),
   },
 });
   
 const queryClient = new QueryClient();
 
+const AppContent = () => {
+  const [LanguageUse, setLanguageUse] = useState("en");
+  useScrollManager(); // Use the custom hook here
+
+  return (
+    <ApiProvider>
+      <Language.Provider value={{ LanguageUse, setLanguageUse }}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/Pools" element={<DCBVaultPools />} />
+        </Routes> 
+        <Footer />
+      </Language.Provider>
+    </ApiProvider>
+  );
+};
 
 const App = () => {
-  const [LanguageUse, setLanguageUse] = useState("en");
   return (
     <DynamicContextProvider
       settings={{
-        // Find your environment id at https://app.dynamic.xyz/dashboard/developer
         environmentId: "5053d254-7e93-489a-908f-4ca299e84bb8",
         walletConnectors: [EthereumWalletConnectors],
       }}
@@ -48,20 +65,9 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <DynamicWagmiConnector>
             <Router>
-              
-                <ApiProvider>
-                  <Language.Provider value={{ LanguageUse, setLanguageUse }}>
-                  <Navbar />
-                  <Routes>
-                  <Route path="/" element={<Main />} />
-                  <Route path="/Stake" component={<Stake />} />
-                  </Routes>
-                    <Footer />
-                  </Language.Provider>
-                </ApiProvider>
-                
+              <AppContent />
             </Router>
-        </DynamicWagmiConnector>
+          </DynamicWagmiConnector>
         </QueryClientProvider>
       </WagmiProvider> 
     </DynamicContextProvider>

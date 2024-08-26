@@ -1,0 +1,78 @@
+/* PoolInfos.css */
+.pool-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-right: 40px; /* Added margin to the right */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    list-style-type: none;
+  }
+  
+  .pool-title {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .pool-info-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center; /* Center the content horizontally */
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  
+  .pool-info {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    background-color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-size: 0.9em;
+  }
+  
+  .pool-info strong {
+    font-weight: bold;
+    color: #007bff;
+    margin-right: 5px;
+  }
+  
+  .toggle-interaction {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.9em;
+    white-space: nowrap;
+  }
+  
+  .toggle-interaction:hover {
+    background-color: #218838;
+  }
+  
+  /* Add responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .pool-info-container {
+      flex-wrap: wrap;
+      justify-content: center; /* Keep center alignment on small screens */
+    }
+  
+    .pool-info {
+      flex: 1 1 calc(33.333% - 10px);
+      font-size: 0.8em;
+    }
+  
+    .toggle-interaction {
+      order: -1;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }

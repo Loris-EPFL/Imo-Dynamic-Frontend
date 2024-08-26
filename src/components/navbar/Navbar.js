@@ -99,6 +99,11 @@ const Navbar = () => {
           navigate('/Stake');
      }
 
+     const handlePools = () => {
+          console.log("pools")
+          navigate('/Pools');
+     }
+
      window.addEventListener('resize', WindowChange)
 
      if (Mobile) {
@@ -150,11 +155,10 @@ const Navbar = () => {
                          <div className='navbarLink' onClick={handleInvest}>
                               {t('Invest')}
                          </div>
-                         <div className='navbarLink' onClick={handleStake}>
-                              Stake
+                         
+                         <div className='navbarLink' onClick={handlePools}>
+                              Pools
                          </div>
-                         <Link to="/stake" className='navbarLink'>Stake</Link>
-
 
                          <div className={Mobile ? 'MobileLanguage' : 'navbarDN'}>
                               <div

@@ -1,0 +1,72 @@
+/* DCBVaultPool.css */
+
+.dcb-vault-pools {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .dcb-vault-pools h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2em;
+  }
+  
+  .dcb-vault-pools p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+  }
+  
+  .harvest-all-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .harvest-all-button:hover {
+    background-color: #45a049;
+  }
+  
+  .harvest-all-button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+  }
+  
+  .pool-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 600px) {
+    .dcb-vault-pools {
+      padding: 10px;
+    }
+  
+    .dcb-vault-pools h2 {
+      font-size: 1.5em;
+    }
+  
+    .dcb-vault-pools p {
+      font-size: 1em;
+    }
+  
+    .harvest-all-button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+    }
+  }
