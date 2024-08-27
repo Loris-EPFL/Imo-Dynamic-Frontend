@@ -1,12 +1,1 @@
-{
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/node",
-        "config": {
-          "buildCommand": "DISABLE_ESLINT_PLUGIN=true npm run vercel-build",
-            "installCommand": "npm install --force"
-        }
-      }
-    ]
-  }
+
