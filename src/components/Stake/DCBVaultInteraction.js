@@ -248,7 +248,12 @@ function DCBVaultInteraction({ poolId }) {
           
           <div>
             <label>Amount to Stake for Pool n° {poolId}</label>
-            <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} />
+            <input type="text" value={amount}  onChange={(e) => {
+                const re = /^[0-9]*\.?[0-9]*$/;
+                if (e.target.value === '' || re.test(e.target.value)) {
+                  setAmount(e.target.value);
+                }
+              }} />
           </div>
 
           <div className="button-container">
