@@ -4,44 +4,45 @@
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
-    margin-right: 40px; /* Added margin to the right */
+    margin-right: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     list-style-type: none;
-  }
-  
-  .pool-title {
+    max-width: 100%;
+}
+
+.pool-title {
     color: #333;
     margin-bottom: 15px;
     text-align: center;
-  }
-  
-  .pool-info-container {
+}
+
+.pool-info-container {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Prevent wrapping */
     align-items: center;
-    justify-content: center; /* Center the content horizontally */
-    gap: 15px;
-    overflow-x: auto;
+    justify-content: center; /* Center the items */
+    gap: 10px;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
     padding-bottom: 10px;
-  }
-  
-  .pool-info {
+}
+
+.pool-info {
     flex: 0 0 auto;
     white-space: nowrap;
     background-color: #ffffff;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    font-size: 0.9em;
-  }
-  
-  .pool-info strong {
+    font-size: 0.85em;
+}
+
+.pool-info strong {
     font-weight: bold;
     color: #007bff;
     margin-right: 5px;
-  }
-  
-  .toggle-interaction {
+}
+
+.toggle-interaction {
     flex: 0 0 auto;
     padding: 8px 16px;
     background-color: #28a745;
@@ -52,27 +53,40 @@
     transition: background-color 0.3s ease;
     font-size: 0.9em;
     white-space: nowrap;
-  }
-  
-  .toggle-interaction:hover {
+    margin-left: 10px; /* Add some space between the infos and the button */
+}
+
+.toggle-interaction:hover {
     background-color: #218838;
-  }
-  
-  /* Add responsive design for smaller screens */
-  @media (max-width: 768px) {
+}
+
+/* Responsive design adjustments */
+@media (max-width: px) {
     .pool-info-container {
-      flex-wrap: wrap;
-      justify-content: center; /* Keep center alignment on small screens */
+        justify-content: flex-start; /* Align items to the start on smaller screens */
     }
-  
+    
     .pool-info {
-      flex: 1 1 calc(33.333% - 10px);
-      font-size: 0.8em;
+        font-size: 0.8em;
+        padding: 5px 8px;
     }
-  
+}
+
+@media (max-width: 768px) {
+    .pool-info-container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pool-info {
+        flex: 1 1 calc(33.333% - 10px);
+        margin-bottom: 10px;
+    }
+
     .toggle-interaction {
-      order: -1;
-      width: 100%;
-      margin-bottom: 10px;
+        order: -1;
+        margin-left: 0;
+        margin-bottom: 10px;
+        width: 100%; /* Make the button full width on small screens */
     }
-  }
+}

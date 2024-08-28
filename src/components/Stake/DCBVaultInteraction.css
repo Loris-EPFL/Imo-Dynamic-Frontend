@@ -1,19 +1,26 @@
 /* DCBVaultInteraction.css */
 .vault-interaction-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .vault-interaction {
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    padding-bottom: 10px; /* Added more padding at the bottom */
-    margin-bottom: 80px; /* Added margin at the bottom */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-  }
+  display: flex;
+  justify-content: center;
+  width: 100%;
+ 
+}
+
+.vault-info {
+  margin-right: 30px;
+}
+
+.vault-interaction {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 80px;
+  margin-right: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
   
   .vault-interaction h2 {
     color: #333;
@@ -68,9 +75,55 @@
     background-color: #cccccc;
     cursor: not-allowed;
   }
+
+  .input-with-max {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust as needed */
+  }
+  
+  .input-with-max .max-button {
+    margin-right: 10px; /* Space between Max button and input */
+    padding: 5px 10px;
+    font-size: 14px;
+    /* Add any other styles to match your design */
+  }
+  
+  .input-with-max input {
+    margin-left: 10px;
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 16px;
+    /* Add any other styles to match your design */
+  }
+  
+  .zap-toggle {
+    margin-top: 10px; 
+  }
+   
+  
+  
+
   
   /* Add responsive design for smaller screens */
   @media (max-width: 768px) {
+    .vault-interaction-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-right: 0; /* Added margin to the right to match PoolInfos */
+  }
+  
+  .vault-interaction {
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      padding-bottom: 10px;
+      margin-bottom: 80px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+  }
+  
     .button-container {
       flex-wrap: wrap;
     }
@@ -119,4 +172,5 @@
     font-size: 1.1em;
     font-weight: bold;
     color: #333;
+    margin-bottom: 5px;
   }

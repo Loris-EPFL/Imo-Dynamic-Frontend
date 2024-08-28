@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract, useBalance, usePublicClient } from 'wagmi';
 import { parseEther, parseGwei } from 'viem';
+import { base } from 'viem/chains';
 import stakeAbi from "../../abi/DCBVault_abi.json"
 import bptAbi from "../../abi/Balancer_BPT.json"
 import { formatBigIntToDecimal } from './formatBigIntToDecimal';
 import {Web3ToastNotification} from '../ErrorDisplay/Web3ToastNotification'
 import "./DCBVaultInteraction.css";
 import {DCBVAULT_CONTRACT_ADDRESS, BALANCER_BPT_ADDRESS} from "./ContractAdress";
+import StakeButtons from './StakeButtons';
 
 
 
@@ -14,6 +16,8 @@ function DCBVaultInteraction({ poolId }) {
   //States
   const { address } = useAccount();
   const [amount, setAmount] = useState('');
+  const [isZapEther, setIsZapEther] = useState(false);
+
 
   //Error States
   const [zapError, setZapError] = useState(null);
@@ -22,6 +26,13 @@ function DCBVaultInteraction({ poolId }) {
   const [withdrawError, setWithdrawError] = useState(null);
   const [harvestError, setHarvestError] = useState(null);
   const [withdrawAllError, setWithdrawAllError] = useState(null);
+
+  //gas hook
+  const { data: ethBalance } = useBalance({ address });
+  const publicClient = usePublicClient({
+    chainId: base.id, 
+  });
+
 
 
   //Write Hooks
@@ -68,8 +79,8 @@ function DCBVaultInteraction({ poolId }) {
   const { data: balanceOf } = useReadContract({
     address: DCBVAULT_CONTRACT_ADDRESS,
     abi: stakeAbi,
-    functionName: 'balanceOf',
-    args: [poolId],
+    functionName: 'users',
+    args: [poolId, address], 
   });
 
   const { data: canUnstake } = useReadContract({
@@ -187,6 +198,32 @@ function DCBVaultInteraction({ poolId }) {
     }
   };
 
+  const formatDate = (timestamp) => {
+    const time = parseInt(timestamp);
+    const date = new Date(Number(time * 1000));
+    return date.toLocaleString();
+  };
+
+  const setMaxAmount = async () => {
+  if (isZapEther) {
+    if (ethBalance) {
+      // Estimate gas for the transaction
+      const gasPrice = await publicClient.getGasPrice();
+      const gasLimit = 300000n; // You might want to estimate this more accurately
+      const gasCost = gasPrice * gasLimit;
+      
+      // Calculate max amount, leaving some ETH for gas
+      const maxAmount = ethBalance.value > gasCost ? ethBalance.value - gasCost : 0n;
+      setAmount(formatBigIntToDecimal(maxAmount).toString());
+    }
+  } else {
+    if (BPTbalanceOf) {
+      setAmount(formatBigIntToDecimal(BPTbalanceOf).toString());
+    }
+  }
+};
+
+
   // ... (rest of your component code, including read functions)
 
   return (
@@ -219,8 +256,19 @@ function DCBVaultInteraction({ poolId }) {
         <h3>Vault Information</h3>
         <div className="info-grid">
           <div className="info-item">
-            <span className="info-label">Your Staked Balance:</span>
-            <span className="info-value">{balanceOf ? (formatBigIntToDecimal(balanceOf).toString()) : '0'} BPT</span>
+            <span className="info-label">Your Shares:</span>
+            <span className="info-value">{balanceOf ? (formatBigIntToDecimal(balanceOf[0]).toString()) : '0'} BPT</span>
+            <span className="info-label">Last Deposit Time:</span>
+            <span className="info-value">{balanceOf ? (formatDate(balanceOf[1])) : '0'}</span>
+          
+          </div>
+          <div className="info-item">
+            <span className="info-label">Total Deposited :</span>
+            <span className="info-value">{balanceOf ? (formatBigIntToDecimal(balanceOf[2]).toString()) : '0'} BPT</span>
+            <span className="info-label">Claimed Rewards :</span>
+            <span className="info-value">{balanceOf ? (formatBigIntToDecimal(balanceOf[3]).toString()) : '0'} IMO</span>
+           
+          
           </div>
           <div className="info-item">
             <span className="info-label">Can Unstake:</span>
@@ -247,30 +295,48 @@ function DCBVaultInteraction({ poolId }) {
       
           
           <div>
-            <label>Amount to Stake for Pool n° {poolId}</label>
-            <input type="text" value={amount}  onChange={(e) => {
-                const re = /^[0-9]*\.?[0-9]*$/;
-                if (e.target.value === '' || re.test(e.target.value)) {
-                  setAmount(e.target.value);
-                }
-              }} />
-          </div>
+              <label>Amount to Stake for Pool n° {poolId}</label>
+              <div className="input-with-max">
+                <button onClick={setMaxAmount}>Max</button>
+                  <input 
+                    type="text" 
+                    value={amount}  
+                    onChange={(e) => {
+                      const re = /^[0-9]*\.?[0-9]*$/;
+                      if (e.target.value === '' || re.test(e.target.value)) {
+                        setAmount(e.target.value);
+                      }
+                    }} 
+                  />
+                  
+              </div>
+              <div className="zap-toggle">
+                <label>
+                  <input 
+                    type="checkbox" 
+                    checked={isZapEther} 
+                    onChange={(e) => setIsZapEther(e.target.checked)} 
+                  />
+                  Zap Ether and Stake
+                </label>
+              </div>
+            </div>
+
 
           <div className="button-container">
-            <button onClick={zapEtherAndStake} disabled={isZapPending}>
-              {isZapPending ? 'Zapping...' : 'Zap Ether and Stake'}
-            </button>
             
-            {allowance >= parseGwei(amount) || bypassApprove ? 
-              <button onClick={deposit} disabled={isDepositPending}>
-                {isDepositPending ? 'Depositing...' : 'Deposit'}
-              </button>
-              :
-              <button onClick={approve} disabled={isApprovePending}>
-                {isApprovePending ? 'Approving...' : 'Approve'}
-              </button>
-            }
-            
+            <StakeButtons 
+              isZapEther={isZapEther}
+              zapEtherAndStake={zapEtherAndStake}
+              isZapPending={isZapPending}
+              allowance={allowance}
+              amount={amount}
+              bypassApprove={bypassApprove}
+              deposit={deposit}
+              isDepositPending={isDepositPending}
+              approve={approve}
+              isApprovePending={isApprovePending}
+            />
             
             <button onClick={withdraw} disabled={isWithdrawPending}>
               {isWithdrawPending ? 'Withdrawing...' : 'Withdraw'}
