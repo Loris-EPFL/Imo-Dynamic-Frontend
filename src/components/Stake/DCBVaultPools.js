@@ -13,7 +13,7 @@ import { DCBVAULT_CONTRACT_ADDRESS, DECUBATE_MSC_ADDRESS } from './ContractAdres
 
 
 function DCBVaultPools() {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const [error, setError] = useState(null);
 
   const [poolLength, setPoolLength] = useState(0);
@@ -58,7 +58,13 @@ function DCBVaultPools() {
   };
 
   
-
+  if (!isConnected) {
+    return (
+      <div className="dcb-vault-pools">
+        <p>Please connect your wallet to access Staking</p>
+      </div>
+    );
+  }
   
 
   return (

@@ -105,6 +105,14 @@ function DCBVaultInteraction({ poolId }) {
     args: [address],
   });
 
+  const { data: ClaimableRewards } = useReadContract({
+    address: DCBVAULT_CONTRACT_ADDRESS,
+    abi: stakeAbi,
+    functionName: 'getRewardOfUser',
+    args: [address, poolId],
+  });
+
+
 
   const approve = async () => {
     setApproveError(null);
@@ -273,6 +281,8 @@ function DCBVaultInteraction({ poolId }) {
           <div className="info-item">
             <span className="info-label">Can Unstake:</span>
             <span className="info-value">{canUnstake !== undefined ? (canUnstake ? 'Yes' : 'No') : 'Loading...'}</span>
+            <span className="info-label">Claimable Rewards :</span>
+            <span className="info-value">{ClaimableRewards ? (formatBigIntToDecimal(ClaimableRewards).toString()) : '0'} IMO</span>
           </div>
           <div className="info-item">
             <span className="info-label">Available BPT Balance to Stake:</span>
