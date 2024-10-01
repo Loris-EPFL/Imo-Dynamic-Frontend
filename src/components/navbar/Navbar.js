@@ -104,6 +104,11 @@ const Navbar = () => {
           navigate('/Pools');
      }
 
+     const handleHome = () => {
+          console.log("home")
+          navigate('/');
+     }
+
      window.addEventListener('resize', WindowChange)
 
      if (Mobile) {
@@ -127,14 +132,15 @@ const Navbar = () => {
           <div className='navbar'>
                <div className='navbarContainer'>
                     <div className='navbarIcon'>
-                         <Logo className='navbarLogo' />
+                         <Logo className='navbarLogo' onClick={handleHome}/>
                     </div>
                     <div className={Mobile ? 'navbarMenu active' : 'navbarMenu'}>
                          <div className={Mobile ? 'MobileIcon' : 'navbarDN'} onClick={HandleMobileMenu}>
                               <Close />
-                              <Logo className='navbarLogo' />
+                              <Logo className='navbarLogo' onClick={handleHome}/>
                          </div>
                          <div className='navbarLink hover' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+                              {/* 
                               <div className='navbarLinkDropDown'>
                                    {dropdown && <DropDown onClick={HandlerCloseMobileMenu} />}
                                    {t('Presentation')}
@@ -142,6 +148,7 @@ const Navbar = () => {
                                         <img src={DropDownpng} alt='' style={{ width: 12 }} />
                                    </div>
                               </div>
+                              */}
                          </div>
                          <div className='navbarLink' onClick={handleWhitepaper}>
                               {t('Whitepaper')}

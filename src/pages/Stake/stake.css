@@ -2,6 +2,11 @@ body {
     overflow-x: hidden;
 }
 
+.hidden-components {
+    display: none;
+  }
+  
+
 .main {
     background-color: white;
     display: flex;

@@ -38,7 +38,8 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const [LanguageUse, setLanguageUse] = useState("en");
-  useScrollManager(); // Use the custom hook here
+  //useScrollManager(); // Use the custom hook here, 
+  //TODO: might need to delete wether we want a custom effect or not
 
   return (
     <ApiProvider>
@@ -46,7 +47,7 @@ const AppContent = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/Pools" element={<DCBVaultPools />} />
+          <Route path="/Pools" element={<Stake />} />
         </Routes> 
         <Footer />
       </Language.Provider>

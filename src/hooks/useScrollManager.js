@@ -1,5 +1,5 @@
 // src/hooks/useScrollManager.js
-import { useEffect, useCallback } from 'react';
+import { useLayoutEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const useScrollManager = () => {
@@ -7,9 +7,9 @@ const useScrollManager = () => {
 
   const scrollRotate = useCallback(() => {
     const element = document.getElementById('animatedElement');
-    console.log('Element:', element);
+    console.log('Element element');
     
-    if (element && element.offsetTop !== undefined) {
+    if (element && element !== null && element.offsetTop !== undefined) {
       console.log('Element offsetTop:', element.offsetTop);
       const scrollPosition = window.pageYOffset;
       const elementPosition = element.offsetTop;
@@ -24,13 +24,13 @@ const useScrollManager = () => {
     }
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.addEventListener('scroll', scrollRotate);
 
     // Initial call to set position
     scrollRotate();
 
-    // Clean up the event listener when the route changes or component unmounts
+    // Clean up the event listener when the route changes or component unmount
     return () => {
       window.removeEventListener('scroll', scrollRotate);
     };
