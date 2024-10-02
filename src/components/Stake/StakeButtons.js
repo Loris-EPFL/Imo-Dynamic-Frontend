@@ -16,9 +16,18 @@ function StakeButtons({
   if (isZapEther) {
     return (
       <button onClick={zapEtherAndStake} disabled={isZapPending}>
-        {isZapPending ? 'Zapping...' : 'Zap Ether and Stake'}
+        {isZapPending ? 'Zapping...' : 'Zap Ether'}
       </button>
     );
+  }
+  console.log('amount' , parseGwei(amount))
+
+  if (parseGwei(amount) === 0n) {
+    return (
+      <button onClick={deposit} disabled={true}>
+        {isDepositPending ? 'Depositing...' : 'Deposit'}
+      </button>
+    ); // or return an empty JSX element
   }
 
   if (allowance >= parseGwei(amount) || bypassApprove) {

@@ -17,6 +17,8 @@ function DCBVaultInteraction({ poolId }) {
   const { address } = useAccount();
   const [amount, setAmount] = useState('');
   const [isZapEther, setIsZapEther] = useState(false);
+  const [isWithdraw, setIsWithdraw] = useState(false);
+
 
 
   //Error States
@@ -213,6 +215,9 @@ function DCBVaultInteraction({ poolId }) {
   };
 
   const setMaxAmount = async () => {
+    if(isWithdraw){
+      setAmount(formatBigIntToDecimal(balanceOf[2]).toString());
+    }else{
   if (isZapEther) {
     if (ethBalance) {
       // Estimate gas for the transaction
@@ -228,6 +233,7 @@ function DCBVaultInteraction({ poolId }) {
     if (BPTbalanceOf) {
       setAmount(formatBigIntToDecimal(BPTbalanceOf).toString());
     }
+  }
   }
 };
 
@@ -290,7 +296,7 @@ function DCBVaultInteraction({ poolId }) {
           </div>
           <div className="info-item">
             <span className="info-label">Allowance:</span>
-            <span className="info-value">{allowance ? (formatBigIntToDecimal(allowance).toString()) : 'Loading...'} BPT</span>
+            <span className="info-value">{allowance ? (formatBigIntToDecimal(allowance).toString()) : '0'} BPT</span>
           </div>
           
         </div>
@@ -305,7 +311,9 @@ function DCBVaultInteraction({ poolId }) {
       
           
           <div>
-              <label>Amount to Stake for Pool n° {poolId}</label>
+                
+
+              {!isWithdraw ? <label>Amount to Stake for Pool n° {poolId}</label> : <label>Amount to Withdraw for Pool n° {poolId}</label>}
               <div className="input-with-max">
                 <button onClick={setMaxAmount}>Max</button>
                   <input 
@@ -320,22 +328,46 @@ function DCBVaultInteraction({ poolId }) {
                   />
                   
               </div>
+              <div className="toggle-container">
+
               <div className="zap-toggle">
                 <label>
                   <input 
                     type="checkbox" 
                     checked={isZapEther} 
-                    onChange={(e) => setIsZapEther(e.target.checked)} 
+                    onChange={(e) => 
+                      {setIsZapEther(e.target.checked)
+                     }
+                    } 
                   />
-                  Zap Ether and Stake
+                  <span className="toggle-slider" />
+                  
                 </label>
+                <span>Zap Ether and Stake</span>
+                </div>
+                
+                <div className="zap-toggle">
+                <label>
+                  <input 
+                    type="checkbox" 
+                    checked={isWithdraw} 
+                    onChange={(e) => {
+                      setIsWithdraw(e.target.checked)
+                      setIsZapEther(!e.target.checked)
+                    }} 
+                  />
+                  <span className="toggle-slider" />
+                  
+                </label>
+                <span>Withdraw</span>
+                </div>
               </div>
             </div>
 
 
           <div className="button-container">
             
-            <StakeButtons 
+            {!isWithdraw ? <StakeButtons 
               isZapEther={isZapEther}
               zapEtherAndStake={zapEtherAndStake}
               isZapPending={isZapPending}
@@ -346,11 +378,11 @@ function DCBVaultInteraction({ poolId }) {
               isDepositPending={isDepositPending}
               approve={approve}
               isApprovePending={isApprovePending}
-            />
+            /> : <></>}
             
-            <button onClick={withdraw} disabled={isWithdrawPending}>
+            {isWithdraw ? <button onClick={withdraw} disabled={isWithdrawPending}>
               {isWithdrawPending ? 'Withdrawing...' : 'Withdraw'}
-            </button>
+            </button> : <></>}
 
            
             
@@ -358,9 +390,9 @@ function DCBVaultInteraction({ poolId }) {
               {isHarvestPending ? 'Harvesting...' : 'Harvest'}
             </button>
 
-            <button onClick={withdrawAll} disabled={isWithdrawAllPending}>
+            {isWithdraw ? <button onClick={withdrawAll} disabled={isWithdrawAllPending}>
               {isWithdrawAllPending ? 'Withdrawing All...' : 'Withdraw All'}
-            </button>
+            </button> : <></>}
 
             
           </div>
