@@ -78,13 +78,13 @@ function DCBVaultPools() {
 
       <Web3ToastNotification showToast={!!isHarvestAllSuccess} toastMessage={`Harvest All Sucessful! Transaction hash: ${SuccessHarvestAllData?.transactionHash}`} />
 
-      <button 
+      {/*<button 
         className="harvest-all-button"
         onClick={harvestAll} 
         disabled={isHarvestAllPending}
       >
         {isHarvestAllPending ? 'Harvesting All...' : 'Harvest All'}
-      </button>
+      </button>*/}
       
       
     </div>

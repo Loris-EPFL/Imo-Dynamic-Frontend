@@ -279,16 +279,14 @@ function DCBVaultInteraction({ poolId }) {
           <div className="info-item">
             <span className="info-label">Total Deposited :</span>
             <span className="info-value">{balanceOf ? (formatBigIntToDecimal(balanceOf[2]).toString()) : '0'} BPT</span>
-            <span className="info-label">Claimed Rewards :</span>
-            <span className="info-value">{balanceOf ? (formatBigIntToDecimal(balanceOf[3]).toString()) : '0'} IMO</span>
-           
-          
-          </div>
-          <div className="info-item">
             <span className="info-label">Can Unstake:</span>
             <span className="info-value">{canUnstake !== undefined ? (canUnstake ? 'Yes' : 'No') : 'Loading...'}</span>
+          </div>
+          <div className="info-item">
             <span className="info-label">Claimable Rewards :</span>
             <span className="info-value">{ClaimableRewards ? (formatBigIntToDecimal(ClaimableRewards).toString()) : '0'} IMO</span>
+            <span className="info-label">Claimed Rewards :</span>
+            <span className="info-value">{balanceOf ? (formatBigIntToDecimal(balanceOf[3]).toString()) : '0'} IMO</span>
           </div>
           <div className="info-item">
             <span className="info-label">Available BPT Balance to Stake:</span>
@@ -336,7 +334,10 @@ function DCBVaultInteraction({ poolId }) {
                     type="checkbox" 
                     checked={isZapEther} 
                     onChange={(e) => 
-                      {setIsZapEther(e.target.checked)
+                      {if(!isWithdraw){
+                        setIsZapEther(e.target.checked)
+                      }
+                        
                      }
                     } 
                   />
@@ -353,7 +354,9 @@ function DCBVaultInteraction({ poolId }) {
                     checked={isWithdraw} 
                     onChange={(e) => {
                       setIsWithdraw(e.target.checked)
-                      setIsZapEther(!e.target.checked)
+                      if(isZapEther){
+                        setIsZapEther(!e.target.checked)
+                      }
                     }} 
                   />
                   <span className="toggle-slider" />
