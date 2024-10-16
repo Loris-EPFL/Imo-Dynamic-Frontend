@@ -35,7 +35,7 @@ function PoolInfo({ poolId }) {
   return (
     <div>
       <div className="pool-card">
-        <h3 className="pool-title">Pool {poolId}</h3>
+        <h3 className="pool-title">Pool #{poolId}</h3>
         
         <div className="pool-info-container">
           <button className="toggle-interaction" onClick={toggleInteraction}>

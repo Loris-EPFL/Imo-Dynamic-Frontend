@@ -17,6 +17,7 @@ import Project from '../../components/Project/Project'
 import Roadmap from '../../components/Roadmap/Roadmap'
 import DCBVaultPools from "../../components/Stake/DCBVaultPools";
 import "./stake.css";
+import StakingExplanation from "../../components/Stake/StakingExplanation";
 
 function Stake() {
   
@@ -25,6 +26,7 @@ function Stake() {
   return (
      <main className='main'>
      <div id="animatedElement" >
+     <StakingExplanation />
       <DCBVaultPools />
       <div className="hidden-components">
 

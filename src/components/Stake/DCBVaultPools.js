@@ -70,7 +70,7 @@ function DCBVaultPools() {
   return (
     <div>
     <div className="dcb-vault-pools">
-      <h2>DCB Vault Pools</h2>
+      <h2>Imo Staking Pools</h2>
       <p>Total Pools: {poolLength}</p>
 
       <Web3ToastNotification showToast={!!error} toastMessage={error?.details || error?.message || ''} />
