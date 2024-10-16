@@ -15,6 +15,7 @@ import Stake from './pages/Stake/Stake';
 import DCBVaultInteraction from './components/Stake/DCBVaultInteraction';
 import DCBVaultPools from "./components/Stake/DCBVaultPools";
 import "./App.css"
+import Token from "./pages/Token/Token";
 
 import { WagmiProvider } from 'wagmi';
 import {QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -48,6 +49,8 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/Pools" element={<Stake />} />
+          <Route path="/Token" element={<Token />} />
+
         </Routes> 
         <Footer />
       </Language.Provider>

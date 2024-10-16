@@ -77,7 +77,7 @@ const Navbar = () => {
           if (Mobile) {
                HandleMobileMenu()
           }
-          window.open('https://bscscan.com/token/0x94d79c325268c898d2902050730f27a478c56cc1')
+          window.open('https://www.basescan.org/address/0x5a7a2bf9ffae199f088b25837dcd7e115cf8e1bb')
      }
      const handleAudit = () => {
           if (Mobile) {
@@ -90,18 +90,20 @@ const Navbar = () => {
                HandleMobileMenu()
           }
           window.open(
-               'https://pancakeswap.finance/swap?inputCurrency=0x2170Ed0880ac9A755fd29B2688956BD959F933F8&outputCurrency=0x94D79c325268C898d2902050730f27A478C56cC1#/swap?&exactField=output&outputCurrency=0x94d79c325268c898d2902050730f27a478c56cc1'
+               'https://balancer.fi/swap/base/ETH/0x5a7a2bf9ffae199f088b25837dcd7e115cf8e1bb'
           )
      }
 
-     const handleStake = () => {
-          console.log("stake")
-          navigate('/Stake');
-     }
+   
 
      const handlePools = () => {
           console.log("pools")
           navigate('/Pools');
+     }
+
+     const handleToken = () => {
+          console.log("token")
+          navigate('/Token');
      }
 
      const handleHome = () => {
@@ -161,6 +163,10 @@ const Navbar = () => {
                          </div>
                          <div className='navbarLink' onClick={handleInvest}>
                               {t('Invest')}
+                         </div>
+
+                         <div className='navbarLink' onClick={handleToken}>
+                              Token
                          </div>
                          
                          <div className='navbarLink' onClick={handlePools}>
