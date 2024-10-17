@@ -97,8 +97,8 @@ const Navbar = () => {
    
 
      const handlePools = () => {
-          console.log("pools")
-          navigate('/Pools');
+          console.log("Staking")
+          navigate('/Staking');
      }
 
      const handleToken = () => {
@@ -170,7 +170,7 @@ const Navbar = () => {
                          </div>
                          
                          <div className='navbarLink' onClick={handlePools}>
-                              Pools
+                              Staking
                          </div>
 
                          <div className={Mobile ? 'MobileLanguage' : 'navbarDN'}>

@@ -48,7 +48,7 @@ const AppContent = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/Pools" element={<Stake />} />
+          <Route path="/Staking" element={<Stake />} />
           <Route path="/Token" element={<Token />} />
 
         </Routes> 

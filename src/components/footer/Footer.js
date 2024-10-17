@@ -47,7 +47,7 @@ const Footer = () => {
           window.open('https://coinmarketcap.com/currencies/imo/')
      }
      const handlerDextools = () => {
-          window.open('https://www.dextools.io/app/en/bnb/pair-explorer/0xfa44d799bfdf6537a54461859b388b99a75b8fbc')
+          window.open('https://www.dextools.io/app/en/base/pair-explorer/0x007bb7a4bfc214df06474e39142288e99540f2b3-0x4200000000000000000000000000000000000006-0x5a7a2bf9ffae199f088b25837dcd7e115cf8e1bb?t=1729172570105')
      }
 
      //Section 2
@@ -62,13 +62,13 @@ const Footer = () => {
      }
 
      //Section 3
-     const handlerPancakeSwap = () => {
+     const handlerBalancer = () => {
           window.open(
-               'https://pancakeswap.finance/swap#/swap?&exactField=output&outputCurrency=0x94d79c325268c898d2902050730f27a478c56cc1'
+               'https://balancer.fi/swap/base/ETH/0x5a7a2bf9ffae199f088b25837dcd7e115cf8e1bb'
           )
      }
      const handlerContract = () => {
-          window.open('https://bscscan.com/token/0x94d79c325268c898d2902050730f27a478c56cc1')
+          window.open('https://www.basescan.org/address/0x5a7a2bf9ffae199f088b25837dcd7e115cf8e1bb')
      }
      const handlerWhite = () => {
           if (LanguageUse === 'en') {
@@ -135,8 +135,8 @@ const Footer = () => {
                          </div>
                          <div className='footerRightColumn'>
                               <div className='footerRightTitle'>{t('SmartLinks')}</div>
-                              <div className='footerRightLink' onClick={handlerPancakeSwap}>
-                                   PancakeSwap
+                              <div className='footerRightLink' onClick={handlerBalancer}>
+                                   Balancer
                               </div>
                               <div className='footerRightLink' onClick={handlerContract}>
                               {t('Contract')}
