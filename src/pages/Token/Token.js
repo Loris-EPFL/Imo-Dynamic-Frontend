@@ -54,8 +54,12 @@ function Token() {
           <div className="supply-info">
             <h3>Supplies</h3>
             <p>Initial Total Supply: 20,000,000 $IMO</p>
+            {totalSupplyData && 
+            <div>
             <p>Current Supply: {formatBigIntToDecimal(totalSupplyData).toString() ?? 'Loading...'}  $IMO</p>
             <p>Total Burned: {formatBigIntToDecimal(window.BigInt(20000000*1e18) - totalSupplyData).toString() ?? 'Loading...'}  $IMO</p>
+            </div>
+            }
           </div>
         </div>
 
