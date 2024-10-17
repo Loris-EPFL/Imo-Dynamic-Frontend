@@ -20,14 +20,19 @@ import { IMO_TOKEN_ADDRESS_BASE } from '../../components/Stake/ContractAdress';
 import IMO_LZERC20 from '../../abi/IMO_LZERC20.json';
 import './Token.css';
 import { formatBigIntToDecimal } from "../../components/Stake/formatBigIntToDecimal";
+import { usePublicClient } from 'wagmi'
+import { base } from "wagmi/chains";
 
 
 function Token() {
-  const { data: accountData } = useAccount();
+  const client = usePublicClient(
+    {chainId: base.id, }
+  )
   const { data: totalSupplyData } = useReadContract({
     address: IMO_TOKEN_ADDRESS_BASE,
     abi: IMO_LZERC20,
     functionName: 'totalSupply',
+    client: client
   });
 
 
