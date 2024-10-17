@@ -304,7 +304,7 @@ function DCBVaultInteraction({ poolId }) {
       
       <div className="vault-interaction-wrapper">
         <div className="vault-interaction">
-          <h2>DCB Vault Interaction</h2>
+          <h2>{isWithdraw ? 'Withdraw IMO' : 'Stake IMO'}</h2>
           
       
           

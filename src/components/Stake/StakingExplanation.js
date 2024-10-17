@@ -6,12 +6,18 @@ const StakingExplanation = () => {
     <div className="explanation-container">
       <h2>What is Staking?</h2>
       <p>
-        Staking is the process of locking up your cryptocurrency assets for a certain period of time to support the operation of a blockchain network. In return, you receive a reward in the form of interest, paid in IMO tokens.
+        Staking is the process of locking up your cryptocurrency assets for a certain period of time to support the growth of the token. In return, you receive a reward in the form of interest, paid in IMO tokens.
       </p>
 
       <h2>Balancer ve8020 Model</h2>
       <p>
-        Using Balancer Pool Tokens allows stakers to earn swap fees from the pool while staking, while reducing impermanent loss. Downside protection is assured by the frequent buyback and burn, which generates a price floor for the pool token, while getting additional swap fees yield.
+        Using Balancer Pool Tokens as the token you stake allows stakers to earn swap fees from the pool while staking, while reducing impermanent loss. Downside protection is assured by the frequent buyback and burn, which generates a price floor for the pool token, while getting additional swap fees yield.
+      </p>
+      <p>
+        We provide an ETH zapper for each pool to allow users to easily stake IMO automatically by converting their ETH to BPT tokens.
+      </p>
+      <p>
+        Alternatively, you can get BPT tokens on <a href="https://balancer.fi/pools/base/v2/0x007bb7a4bfc214df06474e39142288e99540f2b3000200000000000000000191/add-liquidity" target="_blank">Balancer</a>, and stake these BPT tokens in the pool.
       </p>
 
 
